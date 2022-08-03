@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "299555597092",
+    "firebase_url": "https://greenlab-database-default-rtdb.firebaseio.com",
+    "project_id": "greenlab-database",
+    "storage_bucket": "greenlab-database.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:299555597092:android:96b0505e7b4cc0ce26e1b1",
+        "android_client_info": {
+          "package_name": "app.phuonghai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "299555597092-7p4n863o4kia4f9vdnaer4rd2i61tvsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-0uwSkpEVJ4DkFu58dyMmJMQiPIP-Cq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "299555597092-7p4n863o4kia4f9vdnaer4rd2i61tvsn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,137 @@
+{
+    "loginBtnSignIn": "Đăng nhập",
+    "loginTxtEmail": "Tài khoản",
+    "loginTxtPassword": "Mật khẩu",
+    "hintEmail": "Nhập email của bạn",
+    "hintPassword": "Nhập mật khẩu của bạn",
+    "txtRequiredPass": "Tối thiểu 6 ký tự",
+
+    "resetPassword": "Khôi phục mật khẩu",
+    "changePassword": "Đổi mật khẩu",
+    "hintResetPwd": "Vui lòng nhập email của bạn và chúng tôi sẽ gửi\nbạn một liên kết để hướng dẫn đặt lại mật khẩu",
+    "loginTxtError": "Tài khoản hoặc mật khẩu quá ngắn",
+    "loginTxtWrongPassword": "Tài khoản hoặc mật khẩu không đúng",
+    "doneResetPwd": "Khôi phục mật khẩu thành công\nKiểm tra hộp thư email của bạn.",
+
+    "txtSignUp": "Đăng ký",
+    "txtNoAccount": "Chưa có tài khoản?",
+    "txtRepeatPass": "Xác nhận mật khẩu",
+
+    "dashboard": "Bảng thiết bị",
+    "search": "Tìm kiếm",
+    "settings": "Cài đặt",
+    "aboutUs": "Về chúng tôi",
+
+    "lampTxtButton": "ĐÈN TỦ",
+    "fanTxtButton": "QUẠT HÚT",
+    "lastUpdated": "Cập nhập gần nhất",
+    "cantConnect": "Không Thể Kết Nối",
+
+    "txtDeviceControl": "Điều khiển thiết bị",
+    "txtSensorInfor": "Thông tin cảm biến",
+    "txtDeviceInfo": "Thông tin thiết bị", 
+    "txtDescription": "Mô tả", 
+
+    "txtAvgOfDay": "Trung bình",
+    "txtLowestOfDay": "Thấp nhất",
+    "txtHighestOfDay": "Cao nhất",
+
+    "txtLockDevice": "Khoá thiết bị",
+    "subTxtLockDevice": "Khoá điều khiển ở Bảng điều khiển",
+    "txtFriendlyName" : "Tên gợi nhớ",
+    "txtTapToRename": "Nhấn để đổi tên",
+    "txtSerialNumber": "Số sê-ri",
+    "txtModelDevice": "Model",
+    "txtTypeDevice": "Loại",
+
+    "searchHint": "Nhập tên hoặc số seri",
+    "language": "Ngôn ngữ",
+    "tapLanguage": "Nhấn để chọn ngôn ngữ",
+    "logOut": "Đăng xuất",
+
+    "txtRefresh": "Làm mới dữ liệu...",
+
+    "ok": "Xác nhận",
+    "cancel": "Hủy",
+    "txtError": "Lỗi",
+    "disconnected": "Mất kết nối tới thiết bị",
+
+    "createGroup": "Tạo nhóm mới",
+    "addDevice": "Thêm/Xóa thiết bị",
+    "renameGroup": "Đổi tên nhóm",
+    "deleteGroup": "Xoá nhóm",
+    "errorGroup": "Tên nhóm đã tồn tại",
+    "hintCreateGroup": "Tên các nhóm phải khác nhau",
+    "hintDeleteGroup": "Các thiết bị ở nhóm này sẽ về nhóm [General].",
+    "areUSure": "Bạn chắc chắn?",
+
+    "txtHideAllDevices": "Ẩn nhóm tất cả thiết bị",
+    "txtShowAllDevices": "Hiện nhóm tất cả thiết bị",
+
+    "deleteDevice": "Xoá thiết bị khỏi nhóm",
+    "numberOfDevices": "Số lượng thiết bị tìm thấy",
+    
+    "forgetPassword" : "Quên mật khẩu",
+    "contactInfo": "Thông tin liên hệ",
+    "pressAgainToExit": "Nhấn lần nữa để thoát",
+    "txtLockedDevice": "Thiết bị này đang khoá",
+
+    "tapToMoreInfo": "Nhấn để biết thêm thông tin",
+
+    "txtDownload": "Tải dữ liệu",
+    "fromDate": "Từ ngày ",
+    "toDate": "Tới ngày",
+    "pleaseWait": "Xin chờ..",
+    "txtDownloadBtn": "Tải xuống",
+    "downloadDone": "Tải xuống thành công",
+    "downloadError": "Tải xuống thất bại",
+    "downloadWrongDate": "Chọn sai mốc thời gian",
+    
+    "airQuality": "Chất lượng không khí",
+    "Excellent": "Tuyệt vời",
+    "Good": "Tốt",
+    "Moderate": "Trung bình",
+    "Poor": "Kém",
+    "Unhealthy": "Không lành mạnh",
+    
+    "txtGroup": "Cài đặt nhóm",
+
+    "txtVersion": "Phiên bản",
+    "txtNothing": "Chưa có thiết bị",
+
+    "txtColorIndicator": "Chỉ thị màu sắc",
+    "txDataHistory": "Lịch sử dữ liệu",
+    "txtTapToDown": "Nhấn để tải",
+    "txtTapAndHold":  "Nhấn vào ô chỉ số đo để cài đặt cảnh báo",
+
+    "txtTurnOffAlarm": "Cảnh báo tắt",
+    "txtNormalDevice": "Thiết bị đang hoạt động",
+
+    "txtTurnOnAlarm": "Cảnh báo bật",
+    "txtValuesInThres": "Giá trị cảm biến trong ngưỡng",
+    "txtValuesOutThres": "Giá trị cảm biến vượt ngưỡng",
+
+    "txtNoti": "Thông báo",
+    "txtMinThres": "Ngưỡng dưới",
+    "txtMaxThres": "Ngưỡng trên",
+    "txtTapToEnter": "Nhấn để nhập",
+    "txtThresError": "Giá trị ngưỡng dưới phải nhỏ hơn giá trị ngưỡng trên",
+
+    "txtValueError": "Nhập sai thông số",
+    "txtConfigDone": "Lưu cài đặt thành công",
+    "txtSave": "Lưu cài đặt",
+
+    "txtNotFullAddDevice": "Hãy nhập đầy đủ thông tin",
+    "txtAddDeviceDone": "Thêm thiết bị thành công",
+    "txtErrAddDevice": "Lỗi, hãy kiểm tra lại",
+
+    "txtDone": "Xong",
+
+    "txtAllDevices": "Tất cả thiết bị",
+  
+
+    "None": "None"
+
+
+    
+}

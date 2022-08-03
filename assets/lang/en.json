@@ -1,0 +1,134 @@
+{
+    "loginBtnSignIn": "Sign In",
+    "loginTxtEmail": "Email",
+    "loginTxtPassword": "Password",
+    "changePassword": "Change password",
+    "loginTxtError": "Email or password is too short",
+    "loginTxtWrongPassword": "Incorrect account or password",
+    "txtRequiredPass": "At least 6 characters",
+
+    "txtSignUp": "Sign Up",
+    "txtNoAccount": "Dont't have an account?",
+    "txtRepeatPass": "Confirm password",
+
+    "dashboard": "Dashboard",
+    "search": "Search",
+    "settings": "Settings",
+    "aboutUs": "About Us",
+
+    "lampTxtButton": "LAMP",
+    "fanTxtButton": "FAN",
+    "lastUpdated": "Last updated",
+
+    "txtRefresh": "Refreshing...",
+
+
+    "cantConnect": "Can't Connect",
+
+    "txtDeviceControl": "Device control",
+    "txtSensorInfor": "Sensors infomation",
+    "txtDeviceInfo": "Device informations", 
+    "txtDescription": "Description", 
+
+    "txtAvgOfDay": "Average of the day",
+    "txtLowestOfDay": "Lowest of the day",
+    "txtHighestOfDay": "Highest of the day",
+
+    "txtLockDevice": "Lock device",
+    "subTxtLockDevice": "Do not allow control at the dashboard",
+    "txtFriendlyName" : "Friendly name",
+    "txtTapToRename": "Tap to rename",
+    "txtSerialNumber": "Serial number",
+    "txtModelDevice": "Model",
+    "txtTypeDevice": "Type",
+
+    "searchHint": "Enter name or serial number",
+    "language": "Language",
+    "tapLanguage": "Tap to select language",
+    "logOut": "Log Out",
+
+    "ok": "Confirm",
+    "cancel": "Cancel",
+    "txtError": "Error",
+    "disconnected": "Lost connection to device",
+
+    "createGroup": "Create a new group",
+    "addDevice": "Add/Remove device",
+    "renameGroup": "Renaming group",
+    "deleteGroup": "Delete group",
+    "errorGroup": "This group already exists",
+    "hintCreateGroup": "Group names must be different",
+    "hintDeleteGroup": "Devices in this group will return to the [General] group.",
+    "deleteDevice": "Delete device from group",
+    "numberOfDevices": "Number of devices found",
+    "areUSure": "Are you sure?",
+
+    "txtHideAllDevices": "Hide group all devices",
+    "txtShowAllDevices": "Show group all devices",
+
+    "tapToMoreInfo": "Tap to more info",
+
+    "forgetPassword" : "Forgot password",
+    "resetPassword": "Reset password",
+    "hintEmail": "Enter your email",
+    "hintPassword": "Enter your password",
+    "hintResetPwd": "Please enter your email and we will send\nyou a link to reset password instructions",
+    "doneResetPwd": "Password recovery successful\nCheck your email inbox.",
+
+    "contactInfo": "Contact Info",
+    "pressAgainToExit": "Press again to exit",
+    "txtLockedDevice": "This device is locked",
+
+    "txtDownload": "Download data",
+    "fromDate": "From Date",
+    "toDate": "To Date  ",
+    "pleaseWait": "Please wait..",
+    "txtDownloadBtn": "Download",
+    "downloadDone": "Download successful",
+    "downloadError": "Download failed",
+    "downloadWrongDate": "Choose the wrong timeline",
+
+    "airQuality": "Air quality",
+    "Excellent": "Excellent",
+    "Good": "Good",
+    "Moderate": "Moderate",
+    "Poor": "Poor",
+    "Unhealthy": "Unhealthy",
+
+    "txtGroup": "Group settings",
+
+    "txtVersion": "Version",
+    "txtNothing": "Nothing here",
+
+    "txtColorIndicator": "Colors Indicator",
+    "txDataHistory": "Data history",
+    "txtTapToDown": "Tap to download",
+    "txtTapAndHold":  "Tap on the sensor box to set the warning",
+    "txtTurnOffAlarm": "Warning is off",
+    "txtNormalDevice": "The device is active",
+    
+    "txtTurnOnAlarm": "Warning is on",
+    "txtValuesInThres": "Sensor values ​in the threshold",
+    "txtValuesOutThres": "Sensor values ​​out of threshold",
+
+    "txtNoti": "Notification of",
+    "txtMinThres": "Lower threshold",
+    "txtMaxThres": "Upper threshold",
+    "txtTapToEnter": "Tap to enter",
+    "txtThresError": "The lower threshold value must be less than the upper threshold value",
+
+    "txtValueError": "Enter the wrong parameters",
+    "txtConfigDone": "Save settings successfully",
+    "txtSave": "Save config",
+
+    "txtNotFullAddDevice": "Please enter all information",
+    "txtAddDeviceDone": "Add device successfully",
+    "txtErrAddDevice": "Error, please check again",
+
+    "txtAllDevices": "All devices",
+
+    "txtDone": "Done",
+
+
+    "NONE": "None"
+}
