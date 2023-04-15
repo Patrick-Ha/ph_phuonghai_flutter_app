@@ -1,8 +1,8 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phuonghai/app/controllers/home_controller.dart';
 import 'package:phuonghai/app/data/models/group.dart';
+import 'package:phuonghai/app/helper/helper.dart';
 import 'package:phuonghai/app/ui/common/widgets/header_modal.dart';
 
 class AddDeviceModal extends StatefulWidget {
@@ -20,7 +20,7 @@ class _AddDeviceModalState extends State<AddDeviceModal> {
   @override
   void initState() {
     super.initState();
-    listDisplay = List.from(c.listGroup.value[0].devices);
+    listDisplay = List.from(c.allDevicesOfUser);
   }
 
   bool checkDeviceInGroup(dynamic obj) {
@@ -44,19 +44,19 @@ class _AddDeviceModalState extends State<AddDeviceModal> {
       child: Column(
         children: [
           HeaderModal(title: "addDevice".tr),
+          Text(
+            "[${widget.group.name}]",
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           TextFormField(
             decoration: InputDecoration(
-              border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(22)),
-              ),
-              contentPadding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
-              prefixIcon: const Icon(EvaIcons.search),
+              prefixIcon: const Icon(Icons.search),
               helperText: "searchHint".tr,
             ),
             onChanged: (value) {
               listDisplay.clear();
               setState(() {
-                for (var element in c.listGroup.value[0].devices) {
+                for (var element in c.allDevicesOfUser) {
                   if (element.friendlyName
                           .toLowerCase()
                           .contains(value.toLowerCase()) ||
@@ -82,50 +82,28 @@ class _AddDeviceModalState extends State<AddDeviceModal> {
                   ),
                 ),
                 value: checkDeviceInGroup(listDisplay[index]),
-                onChanged: (value) {
+                onChanged: (value) async {
                   if (value == true) {
                     // Add thiet bi
-                    final i = c.listGroup.value[0].devices.indexWhere(
-                      (e) => e.key == listDisplay[index].key,
+                    Helper.showLoading('loading'.tr);
+                    await c.addDeviceToGroup(
+                      widget.group.id,
+                      listDisplay[index].id,
                     );
                     setState(() {
-                      widget.group.devices.add(c.listGroup.value[0].devices[i]);
-                      c.addDeviceToGroup(
-                        widget.group.name,
-                        listDisplay[index].key,
-                      );
+                      widget.group.devices.add(listDisplay[index]);
                     });
-                    Get.snackbar(
-                      "add".tr,
-                      "done".tr,
-                      backgroundColor: Colors.white60,
-                      maxWidth: 420,
-                      margin: const EdgeInsets.all(10),
-                      icon: const Icon(EvaIcons.checkmark, color: Colors.green),
-                      snackPosition: SnackPosition.TOP,
-                      duration: const Duration(seconds: 1),
-                    );
+                    Helper.dismiss();
                   } else {
                     // Go thi bi
+                    Helper.showLoading('loading'.tr);
+                    await c.removeDeviceFromGroup(listDisplay[index].idInGroup);
                     setState(() {
                       widget.group.devices.removeWhere(
                         (e) => e.key == listDisplay[index].key,
                       );
-                      c.removeDeviceFromGroup(
-                        widget.group.name,
-                        listDisplay[index].key,
-                      );
                     });
-                    Get.snackbar(
-                      "remove".tr,
-                      "done".tr,
-                      backgroundColor: Colors.white60,
-                      maxWidth: 420,
-                      margin: const EdgeInsets.all(10),
-                      icon: const Icon(EvaIcons.checkmark, color: Colors.green),
-                      snackPosition: SnackPosition.TOP,
-                      duration: const Duration(seconds: 1),
-                    );
+                    Helper.dismiss();
                   }
                 },
                 title: Text(listDisplay[index].friendlyName),

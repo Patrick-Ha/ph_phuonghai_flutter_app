@@ -18,12 +18,12 @@ class DefaultButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: width,
-      height: 40,
+      height: 38,
       child: ElevatedButton(
         onPressed: press as void Function()?,
         style: TextButton.styleFrom(
           elevation: 0,
-          backgroundColor: bgColor,
+          backgroundColor: press == null ? Colors.black12 : bgColor,
         ),
         child: Text(text),
       ),

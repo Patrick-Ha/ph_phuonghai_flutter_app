@@ -18,23 +18,41 @@ const Map<String, String> vi_VN = {
   "newUpdateAvailable": "Có bản cập nhập mới",
   "newVersion": "Phiên bản mới",
   "currentVersion": "Phiên bản hiện tại",
+  "more": "Thêm",
+  "fromDate": 'Từ ngày',
+  "toDate": "Tới ngày",
+
+  // Map
+  "3h": "3 giờ gần nhất",
+  "24h": "24 giờ gần nhất",
+  "selectDate": "Chọn ngày",
+  "noData": "Không có dữ liệu",
 
   // Login page
   "logIn": "Đăng nhập",
   "email": "Email",
   "password": "Mật khẩu",
   "noAccount": "Chưa có tài khoản?",
-
+  "forgotPassword": "Quên mật khẩu?",
+  "hintEmail": "Nhập email của bạn",
+  "hintPassword": "Nhập mật khẩu của bạn",
+  "repeatPassword": "Nhập lại mật khẩu",
+  "showPass": "Hiển thị mật khẩu",
   "changePassword": "Đổi mật khẩu",
   "emailTooShort": "Email hoặc mật khẩu quá ngắn",
   "wrongIdOrPass": "Sai tài khoản hoặc mật khẩu",
+  "deleteAccount": "Xóa tài khoản",
+  "hintDeleteAccount": "Bạn sẽ không thể tạo lại tài khoản đã xóa.",
 
   // Sign up page
   "signUp": "Đăng ký",
   "pwdTooShort": "Mật khẩu tối thiểu 6 ký tự",
   "signUpError": "Tài khoản đã tồn tại",
+  "accountNotFound": "Tài khoản không tồn tại",
   "isValidEmail": "Định dạng email không hợp lệ",
+  "pwdIncorrect": "Mật khẩu không khớp",
   "signUpDone": "Đăng ký tài khoản thành công",
+  "forgotPwdDone": "Hãy kiểm tra Email của bạn",
 
   // Search
   "search": "Tìm kiếm",
@@ -48,7 +66,11 @@ const Map<String, String> vi_VN = {
   "allDevices": "Tất cả thiết bị",
   "hideAllDevices": "Ẩn nhóm tất cả thiết bị",
   "showAllDevices": "Hiện nhóm tất cả thiết bị",
-  "refresh": "Làm mới dữ liệu...",
+  "refresh": "Làm mới...",
+  "lostConnection": "Mất kết nối",
+  "lostGPS": "Mất tín hiệu định vị GPS",
+  "manageDevice": "Quản lý thiết bị",
+  "manageUser": "Quản lý tài khoản",
 
   // Group setting
   "name": "Tên",
@@ -61,34 +83,65 @@ const Map<String, String> vi_VN = {
   "hintCreateGroup": "Tên các nhóm phải khác nhau",
   "add": "Thêm thiết bị",
   "remove": "Gỡ thiết bị",
+  "totalEquip": "Tổng thiết bị sở hữu",
 
   // For SmartpH sensor
+  "ok": "Đang đo",
   "good": "Đang đo",
   "calibrating": "Hiệu chuẩn",
+  "normalTooltip": "Không cài đặt cảnh báo.\nThiết bị đang hoạt động",
+  "goodTooltip": "Giá trị an toàn",
+  "alarmTooltip": "Giá trị cảnh báo",
+  "errorTooltip": "Cảm biến / thiết bị bị lỗi",
+  "statisticsOfTheDay": "Thống kê trong ngày",
 
   // For detail device page
+  "chart": "Biểu đồ",
+  "list": "Danh sách",
   "dataHistory": "Lịch sử dữ liệu",
   "description": "Mô tả",
   "deviceInfo": "Thông tin thiết bị",
   "friendlyName": "Tên",
-  "serialNumber": "Số sê-ri",
+  "serialNumber": "Số Sêri",
   "model": "Model",
   "type": "Loại",
   "avgOfDay": "Trung bình trong ngày",
   "lowestOfDay": "Thấp nhất trong ngày",
   "highestOfDay": "Cao nhất trong ngày",
+  "avg": "Trung bình: ",
+  "lowest": "Thấp nhất: ",
+  "highest": "Cao nhất: ",
   "download": "Tải dữ liệu",
   "down": "Tải",
   "downloadWrongDate": "Chọn sai thời gian",
+  "dateCreate": "Ngày tạo",
+  "createDevice": "Tạo thiết bị",
+  "createUser": "Tạo tài khoản",
+  "status": "Trạng thái",
+  "active": 'Hoạt động',
+  "deleted": 'Đã xóa',
+  "assignment": 'Gán thiết bị',
+  "editInfo": "Sửa thông tin",
+  "emptyTextField": "Không được để trống",
+  "createDeviceErr": "Thiết bị đã tồn tại",
+  "reloadForUpdate": "Tải lại trang để cập nhập",
 
   // Alarm sensor
   "notification": "Thông báo",
+  "settingThres": "Cài đặt ngưỡng cảnh báo",
   "lowerThres": "Ngưỡng dưới",
   "upperThres": "Ngưỡng trên",
   "txtTapToEnter": "Nhấn để nhập",
   "errorThes": "Giá trị ngưỡng dưới phải nhỏ hơn giá trị ngưỡng trên",
   "errorValue": "Nhập sai thông số",
   "saveConfig": "Lưu cài đặt",
+  "modeThres": "Chế độ cảnh báo",
+  "hintThres":
+      "Giá trị an toàn lớn hơn [Ngưỡng dưới]\nvà nhỏ hơn [Ngưỡng trên]",
+  "outThres": "Ngoài ngưỡng",
+  "inThres": "Trong ngưỡng",
+  "hintThresOut": "Ngoài ngưỡng: cảnh báo khi giá trị ngoài [Min - Max]",
+  "hintThresIn": "Trong ngưỡng: cảnh báo khi giá trị trong [Min - Max]",
 
   // For IAQ sensor
   "airQuality": "Chất lượng không khí",
@@ -96,11 +149,13 @@ const Map<String, String> vi_VN = {
   "goodIaq": "Tốt",
   "moderateIaq": "Trung bình",
   "poorIaq": "Kém",
-  "unhealthyIaq": "Không lành mạnh",
+  "unhealthyIaq": "Không tốt",
+  "errorIaq": "Lỗi",
 
   "Temp": "Nhiệt độ",
   "Temperature": "Nhiệt độ",
   "Humidity": "Độ ẩm",
+  "Humi": "Độ ẩm",
   "Velocity": "Tốc độ gió",
   "Light": "Ánh sáng",
 
@@ -109,26 +164,45 @@ const Map<String, String> vi_VN = {
   "version": "Phiên bản",
   "logOut": "Đăng xuất",
   "areUSure": "Bạn chắc chắn?",
+  "confirmPass": "Xác nhận mật khẩu",
+  "wrongPass": "Sai mật khẩu",
 
   // Ble page
   "bleDisabled": "Bluetooth đang tắt",
   "turnOnBle": "Bật bluetooth",
   "bleEnabled": "Bluetooth đang bật",
   "scanBle": "Quét thiết bị",
+  "firmware": "Phiên bản Firmware",
+  "hardware": "Phiên bản Hardware",
+  "mac": "Địa chỉ MAC",
+  "manufac": "Nhà sản xuất",
+  "cantConnect": "Không thể kết nối",
 
-  // Ble
-  "180A": "Device Information",
-  //:
-  "2A24": "Model Number",
-  "2A25": "Serial Number",
-  "2A26": "Firmware",
-  "2A27": "Hardware",
-  "2A28": "Software",
-  "2A29": "Manufacturer",
+  // Temp service
+  "tempCurrent": "Nhiệt độ hiện tại",
+  "tempSet": "Nhiệt độ cài đặt",
+  "unit": "Đơn vị",
+  "calib": "Hiệu chuẩn cảm biến",
+  "calibDone": "Hiệu chuẩn cảm biến thành công",
 
-  "1800": "Generic Access",
-  "1801": "Generic Attribute",
+  // Stir service
+  "stirService": "Bộ khuấy từ",
+  "stirLevel": "Mức tốc độ khuấy",
 
-  "180F": "Battery",
-  "2A19": "Batery Level",
+  // Calib
+  "attention": "Chú ý",
+  "complete": "Hoàn thành",
+  "point1": "Điểm chuẩn",
+  "point2": "Điểm 2",
+  "understood": "Đã hiểu",
+  "hintTextCalib": "Nhập giá trị chuẩn",
+
+  // DateTime
+  "Mo": "T2",
+  "Tu": "T3",
+  "We": "T4",
+  "Th": "T5",
+  "Fr": "T6",
+  "Sa": "T7",
+  "Su": "CN",
 };

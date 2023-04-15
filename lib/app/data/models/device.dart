@@ -1,5 +1,5 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 const Map<String, String> iaqUnit = {
   "oC": "°C",
@@ -18,31 +18,33 @@ const Map<String, dynamic> iaqColor = {
 };
 
 class Device {
+  int id;
+  int idInGroup = 0;
   String key;
   String type;
   String model;
   String friendlyName;
   String description;
 
-  DateTime dateSync;
+  final sensorsRef = [];
+  final isActived = true.obs;
+  final isSelected = false.obs;
 
-  bool isActived;
-  bool enable;
-  bool isBusy;
+  final dateSyncObs = DateTime.utc(2020).obs;
+  set dateTimeSync(String date) {
+    dateSyncObs.value = DateTime.parse(date);
+  }
 
-  String get getSyncDate =>
-      "${dateSync.hour.toString().padLeft(2, '0')}:${dateSync.minute.toString().padLeft(2, '0')}, ${dateSync.day.toString().padLeft(2, '0')}/${dateSync.month.toString().padLeft(2, '0')}";
+  String get getSyncDateObs =>
+      "${dateSyncObs.value.hour.toString().padLeft(2, '0')}:${dateSyncObs.value.minute.toString().padLeft(2, '0')}, ${dateSyncObs.value.day.toString().padLeft(2, '0')}/${dateSyncObs.value.month.toString().padLeft(2, '0')}";
 
   Device({
+    required this.id,
     required this.key, // so S/N
     required this.type,
     required this.model,
     required this.friendlyName,
     required this.description,
-    required this.dateSync,
-    this.isActived = true,
-    this.enable = true,
-    this.isBusy = false,
   });
 }
 
@@ -50,69 +52,78 @@ class DeviceModel extends Device {
   List<SensorModel> sensors = [];
 
   DeviceModel({
+    required int id,
     required String key,
     required String type,
     required String model,
     required String friendlyName,
     required String description,
-    required DateTime dateSync,
   }) : super(
+          id: id,
           key: key,
           type: type,
           model: model,
           friendlyName: friendlyName,
           description: description,
-          dateSync: dateSync,
         );
 
   factory DeviceModel.fromJson(Map<String, dynamic> json) {
     return DeviceModel(
+      id: json['Id'],
       key: json['SerialNumber'],
       type: json['Type'],
       model: json['Model'],
       description: json["Description"],
       friendlyName: json["FriendlyName"],
-      dateSync: DateTime.parse(json["DateSync"]),
     );
   }
 }
 
 class SensorModel {
   String key;
-  String name;
-  String status;
-  String unit;
+  final String name;
+  final String unit;
+  int id;
 
-  num value;
-  num minAlarm;
-  num maxAlarm;
+  final status = ''.obs;
+  final Rx<double> val = 0.0.obs;
+  num minAlarm = 0;
+  num maxAlarm = 1000;
 
-  Color color;
-
-  bool activeAlarm;
-
+  // 0: not active, 1: giá trị an toàn bên trong, 2: giá trị an toàn bên ngoài
+  int activeAlarm = 0;
+  final color = Colors.blueGrey.obs;
   IconData icon;
 
   SensorModel({
     required this.key,
     required this.name,
-    required this.status,
     required this.unit,
-    required this.value,
-    this.activeAlarm = false,
-    this.minAlarm = 0,
-    this.maxAlarm = 1000,
-    this.icon = EvaIcons.checkmarkCircle2Outline,
-    this.color = Colors.blueGrey,
+    this.id = 0,
+    this.icon = Icons.check_circle,
   });
+
+  void setAlarm(num? min, num? max) {
+    if (min == null || max == null) {
+      activeAlarm = 0;
+    } else {
+      if (min > max) {
+        minAlarm = max;
+        maxAlarm = min;
+        activeAlarm = 2;
+      } else {
+        minAlarm = min;
+        maxAlarm = max;
+        activeAlarm = 1;
+      }
+    }
+  }
 
   factory SensorModel.fromJson(String sn, Map<String, dynamic> json) {
     return SensorModel(
       key: sn,
       name: json["SensorType"],
-      status: json["Status"],
       unit: iaqUnit[json["Unit"]] ?? json["Unit"],
-      value: json["Value"],
     );
   }
 }

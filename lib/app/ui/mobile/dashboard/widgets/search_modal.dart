@@ -1,8 +1,6 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phuonghai/app/controllers/home_controller.dart';
-import 'package:phuonghai/app/routes/app_pages.dart';
 import 'package:phuonghai/app/ui/common/widgets/header_modal.dart';
 
 class SearchModal extends StatefulWidget {
@@ -18,7 +16,7 @@ class _SearchModalState extends State<SearchModal> {
 
   @override
   void initState() {
-    listDisplay = List.from(c.listGroup.value[0].devices);
+    listDisplay = List.from(c.allDevicesOfUser);
     super.initState();
   }
 
@@ -35,13 +33,13 @@ class _SearchModalState extends State<SearchModal> {
           TextFormField(
             autofocus: true,
             decoration: InputDecoration(
-              prefixIcon: const Icon(EvaIcons.search),
+              prefixIcon: const Icon(Icons.search),
               helperText: "searchHint".tr,
             ),
             onChanged: (value) {
               listDisplay.clear();
               setState(() {
-                for (var element in c.listGroup.value[0].devices) {
+                for (var element in c.allDevicesOfUser) {
                   if (element.friendlyName
                           .toLowerCase()
                           .contains(value.toLowerCase()) ||
@@ -70,7 +68,9 @@ class _SearchModalState extends State<SearchModal> {
                 onTap: () {
                   Navigator.of(context).pop();
                   c.addDetailDevice(listDisplay[index]);
-                  Get.toNamed(Routes.DEVICE);
+                  // if (!GetPlatform.isWeb) {
+                  //   Get.toNamed(Routes.DEVICE);
+                  // }
                 },
               ),
               separatorBuilder: (_, __) => const Divider(),

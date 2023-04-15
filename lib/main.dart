@@ -1,24 +1,24 @@
 import 'dart:io';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:phuonghai/app/routes/app_pages.dart';
 import 'package:phuonghai/app/translations/app_translations.dart';
 import 'package:phuonghai/app/ui/theme/app_theme.dart';
-import 'package:phuonghai/firebase_options.dart';
+import 'package:timeago/timeago.dart';
+
+import 'package:url_strategy/url_strategy.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   HttpOverrides.global = MyHttpOverrides();
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  timeago.setLocaleMessages('vi', MyCustomMessages());
 
   if (!GetPlatform.isWeb) {
     final directory = await getApplicationDocumentsDirectory();
@@ -27,6 +27,8 @@ void main() async {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
+  } else {
+    setPathUrlStrategy();
   }
 
   runApp(
@@ -34,10 +36,19 @@ void main() async {
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.INITIAL,
       getPages: AppPages.pages,
-      defaultTransition: Transition.fade,
       theme: appThemeData,
       locale: await AppTranslations.locale,
       fallbackLocale: AppTranslations.fallbackLocale,
+      defaultTransition: Transition.fade,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', 'US'),
+        Locale('vi', 'VN'),
+      ],
       translations: AppTranslations(),
       builder: EasyLoading.init(),
     ),
@@ -51,4 +62,40 @@ class MyHttpOverrides extends HttpOverrides {
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
   }
+}
+
+// my_custom_messages.dart
+class MyCustomMessages implements LookupMessages {
+  @override
+  String prefixAgo() => '';
+  @override
+  String prefixFromNow() => '';
+  @override
+  String suffixAgo() => 'trước';
+  @override
+  String suffixFromNow() => '';
+  @override
+  String lessThanOneMinute(int seconds) => 'gần 1 phút';
+  @override
+  String aboutAMinute(int minutes) => '$minutes phút';
+  @override
+  String minutes(int minutes) => '$minutes phút';
+  @override
+  String aboutAnHour(int minutes) => '$minutes phút';
+  @override
+  String hours(int hours) => '$hours giờ';
+  @override
+  String aDay(int hours) => '$hours giờ';
+  @override
+  String days(int days) => '$days ngày';
+  @override
+  String aboutAMonth(int days) => '$days ngày';
+  @override
+  String months(int months) => '$months tháng';
+  @override
+  String aboutAYear(int year) => '$year năm';
+  @override
+  String years(int years) => '$years năm';
+  @override
+  String wordSeparator() => ' ';
 }

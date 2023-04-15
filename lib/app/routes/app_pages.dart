@@ -1,13 +1,10 @@
 import 'package:get/route_manager.dart';
 import 'package:phuonghai/app/controllers/bindings/auth_binding.dart';
-import 'package:phuonghai/app/controllers/bindings/ble_binding.dart';
 import 'package:phuonghai/app/controllers/bindings/home_binding.dart';
 import 'package:phuonghai/app/ui/common/login/login_page.dart';
 import 'package:phuonghai/app/ui/common/sign_up/sign_up_page.dart';
 import 'package:phuonghai/app/ui/common/splash/splash_page.dart';
 import 'package:phuonghai/app/ui/desktop/dashboard/wed_home_page.dart';
-import 'package:phuonghai/app/ui/mobile/bluetooth/bluetooth_page.dart';
-import 'package:phuonghai/app/ui/mobile/device/device_page.dart';
 import 'package:phuonghai/app/ui/mobile/device/iaq_page.dart';
 import 'package:phuonghai/app/ui/mobile/home_page.dart';
 import 'package:phuonghai/app/ui/mobile/settings/settings_page.dart';
@@ -23,12 +20,12 @@ class AppPages {
     ),
     GetPage(
       name: Routes.LOGIN,
-      page: () => LogInPage(),
+      page: () => const LogInPage(),
       binding: AuthBinding(),
     ),
     GetPage(
       name: Routes.SIGNUP,
-      page: () => SignUpPage(),
+      page: () => const SignUpPage(),
       binding: AuthBinding(),
     ),
     GetPage(
@@ -36,24 +33,19 @@ class AppPages {
       page: () => const HomePage(),
       binding: HomeBinding(),
     ),
-    GetPage(
-      name: Routes.DEVICE,
-      page: () => const DevicePage(),
-      binding: HomeBinding(),
-    ),
+    // GetPage(
+    //   name: Routes.DEVICE,
+    //   page: () => const DevicePage(),
+    //   binding: HomeBinding(),
+    // ),
     GetPage(
       name: Routes.IAQ_DEVICE,
       page: () => const IaqPage(),
       binding: HomeBinding(),
     ),
     GetPage(
-      name: Routes.BLUETOOTH,
-      page: () => const BluetoothPage(),
-      binding: BleBinding(),
-    ),
-    GetPage(
       name: Routes.WEB_HOME,
-      page: () => WebHomePage(),
+      page: () => const WebHomePage(),
       binding: HomeBinding(),
     ),
     GetPage(

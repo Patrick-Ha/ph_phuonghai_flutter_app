@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import 'device.dart';
 
 const Map<String, String> iaqUnit = {
@@ -17,40 +17,35 @@ const Map<String, dynamic> iaqColorMap = {
 };
 
 class IaqModel extends Device {
-  Color _iaqColor = Colors.white;
-  int iaqIndex;
+  final iaqIndex = 0.obs;
   String iaqStatus;
   List<IaqSensor> sensors = [];
 
-  set setColor(String stat) => _iaqColor = iaqColorMap[stat] ?? Colors.blueGrey;
-  Color get getColor => _iaqColor;
-
   IaqModel({
+    required int id,
     required String key,
     required String type,
     required String model,
     required String friendlyName,
     required String description,
-    required DateTime dateSync,
-    this.iaqIndex = 0,
     this.iaqStatus = "Good",
   }) : super(
+          id: id,
           key: key,
           type: type,
           model: model,
           friendlyName: friendlyName,
           description: description,
-          dateSync: dateSync,
         );
 
   factory IaqModel.fromJson(Map<String, dynamic> json) {
     return IaqModel(
+      id: json['Id'],
       key: json['SerialNumber'],
       type: json['Type'],
       model: json['Model'],
       description: json["Description"],
       friendlyName: json["FriendlyName"],
-      dateSync: DateTime.parse(json["DateSync"]),
     );
   }
 }
@@ -58,29 +53,30 @@ class IaqModel extends Device {
 class IaqSensor {
   String key;
   String name;
-  String status;
   String unit;
 
-  num value;
-  Color color;
+  final status = ''.obs;
+  final Rx<double> val = 0.0.obs;
+
+  final color = Colors.grey.obs;
+  set setColor(String status) {
+    color.value = iaqColorMap[status] ?? Colors.blueGrey;
+  }
 
   IaqSensor({
     required this.key,
     required this.name,
-    required this.status,
     required this.unit,
-    required this.value,
-    required this.color,
   });
 
   factory IaqSensor.fromJson(String sn, Map<String, dynamic> json) {
     return IaqSensor(
       key: sn,
       name: json["SensorType"],
-      status: json["Status"],
+      // status: json["Status"],
       unit: iaqUnit[json["Unit"]] ?? json["Unit"],
-      value: json["Value"],
-      color: iaqColorMap[json["Status"]] ?? Colors.blueGrey,
+      // value: json["Value"],
+      // color: iaqColorMap[json["Status"]] ?? Colors.blueGrey,
     );
   }
 }

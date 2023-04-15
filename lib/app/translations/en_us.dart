@@ -6,7 +6,7 @@ const Map<String, String> en_US = {
   "noInternet": "No Internet Connection",
   "somethingWentWrong": "Something went wrong",
   "dashboard": "Dashboard",
-  "groupSettings": "Group settings",
+  "groupSettings": "Groups",
   "settings": "Settings",
   "loading": "Loading...",
   "confirm": "Confirm",
@@ -17,15 +17,30 @@ const Map<String, String> en_US = {
   "newUpdateAvailable": "New update available",
   "newVersion": "New version",
   "currentVersion": "Current version",
+  "more": "More",
+  "fromDate": 'From date',
+  "toDate": "To date",
+
+  // Map
+  "3h": "Last 3 hour",
+  "24h": "Last 24 hour",
+  "selectDate": "Select date range",
+  "noData": "No data",
 
   // Login
   "logIn": "Log In",
   "email": "Email",
   "password": "Password",
+  "showPass": "Show password",
   "changePassword": "Change password",
   "emailTooShort": "Email or password is too short",
   "wrongIdOrPass": "Incorrect account or password",
   "noAccount": "Dont't have an account?",
+  "forgotPassword": "Forgot password?",
+  "hintEmail": "Type your email",
+  "hintPassword": "Type your password",
+  "deleteAccount": "Delete the account",
+  "hintDeleteAccount": "You will not be able to recreate the deleted account.",
 
   // Search
   "search": "Search",
@@ -37,8 +52,12 @@ const Map<String, String> en_US = {
   "signUpError": "Account already exists",
   "isValidEmail": "Invalid email format",
   "signUpDone": "Successful account registration",
+  "repeatPassword": "Repeat password",
+  "pwdIncorrect": "Password incorrect",
+  "accountNotFound": "Account does not exist",
+  "forgotPwdDone": "Please check your Email",
 
-  // Dashbord
+  // Dashboard
   "groupDisplay": "Group display",
   "noDevice": "No device",
   "lastUpdated": "Last updated",
@@ -46,6 +65,11 @@ const Map<String, String> en_US = {
   "hideAllDevices": "Hide group all devices",
   "showAllDevices": "Show group all devices",
   "refresh": "Refreshing...",
+  "lostConnection": "Lost connection",
+  "lostGPS": "Lost GPS navigation signal",
+  "manageDevice": "Device management",
+  "manageUser": "Account Management",
+  "totalEquip": "Total equipment owned",
 
   // Group settings
   "name": "Name",
@@ -61,10 +85,18 @@ const Map<String, String> en_US = {
   "remove": "Remove device",
 
   // For SmartpH sensor
+  "ok": "Measuring",
   "good": "Measuring",
   "calibrating": "Calibrate",
+  "normalTooltip": "No alarm setting.\nSensor/device is working",
+  "goodTooltip": "Safe value",
+  "alarmTooltip": "Warning value",
+  "errorTooltip": "Faulty sensor/device",
+  "statisticsOfTheDay": "Statistics of the day",
 
   // For detail device page
+  "chart": "Chart",
+  "list": "List",
   "dataHistory": "Data history",
   "description": "Description",
   "deviceInfo": "Device info",
@@ -75,12 +107,27 @@ const Map<String, String> en_US = {
   "avgOfDay": "Average of the day",
   "lowestOfDay": "Lowest of the day",
   "highestOfDay": "Highest of the day",
+  "avg": "Average: ",
+  "lowest": "Lowest: ",
+  "highest": "Highest: ",
   "download": "Download data",
   "down": "Download",
   "downloadWrongDate": "Choose the wrong timeline",
+  "dateCreate": "Date created",
+  "createDevice": "Create a new device",
+  "createUser": "Create a new account",
+  "status": "Status",
+  "active": 'Active',
+  "deleted": 'Deleted',
+  "assignment": 'Device assignment',
+  "editInfo": "Edit",
+  "emptyTextField": "Can't be left blank",
+  "createDeviceErr": "Device already exists",
+  "reloadForUpdate": "Reload the page for updates",
 
   // Alarm sensor
   "notification": "Notification of",
+  "settingThres": "Alarm threshold setting",
   "lowerThres": "Lower threshold",
   "upperThres": "Upper threshold",
   "txtTapToEnter": "Tap to enter",
@@ -88,6 +135,13 @@ const Map<String, String> en_US = {
       "The lower threshold value must be less than the upper threshold value",
   "errorValue": "Enter the wrong parameters",
   "saveConfig": "Save config",
+  "modeThres": "Alarm mode",
+  "hintThres":
+      "Safe value greater than [Lower Threshold]\n and less than [Upper Threshold]",
+  "outThres": "Out threshold",
+  "inThres": "In threshold",
+  "hintThresOut": "Out threshold: alarm when value is out [Min - Max]",
+  "hintThresIn": "In threshold: alert when value in [Min - Max]",
 
   // For IAQ sensor
   "airQuality": "Air quality",
@@ -96,10 +150,12 @@ const Map<String, String> en_US = {
   "moderateIaq": "Moderate",
   "poorIaq": "Poor",
   "unhealthyIaq": "Unhealthy",
+  "errorIaq": "Error",
 
   "Temp": "Temp",
   "Temperature": "Temp",
   "Humidity": "Humidity",
+  "Humi": "Humidity",
   "Velocity": "Velocity",
   "Light": "Light",
 
@@ -108,10 +164,45 @@ const Map<String, String> en_US = {
   "version": "Version",
   "logOut": "Log Out",
   "areUSure": "Are you sure?",
+  "confirmPass": "Confirm password",
+  "wrongPass": "Wrong password",
 
   // Ble page
   "bleDisabled": "Bluetooth adapter is disabled",
   "turnOnBle": "Turn on bluetooth",
   "bleEnabled": "Bluetooth adapter is enabled",
   "scanBle": "Scan",
+  "firmware": "Firmware version",
+  "hardware": "Hardware version",
+  "mac": "MAC address",
+  "manufac": "Manufacturer",
+  "cantConnect": "Can't connect",
+
+  // Temp service
+  "tempCurrent": "Current temperature",
+  "tempSet": "Set temperature",
+  "unit": "Unit",
+  "calib": "Sensor Calibration",
+  "calibDone": "Sensor Calibration Successful",
+
+  // Stir service
+  "stirService": "Stirrer",
+  "stirLevel": "Stirring speed level",
+
+  // Calib
+  "attention": "Attention",
+  "complete": "Complete",
+  "point1": "Point 1",
+  "point2": "Point 2",
+  "understood": "Understood",
+  "hintTextCalib": "Enter the standard value",
+
+  // DateTime
+  "Mo": "Mo",
+  "Tu": "Tu",
+  "We": "We",
+  "Th": "Th",
+  "Fr": "Fr",
+  "Sa": "Sa",
+  "Su": "Su",
 };

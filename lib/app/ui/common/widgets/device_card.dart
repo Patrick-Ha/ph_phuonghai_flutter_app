@@ -1,10 +1,13 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phuonghai/app/controllers/home_controller.dart';
 import 'package:phuonghai/app/data/models/device.dart';
 import 'package:phuonghai/app/helper/helper.dart';
-import 'package:phuonghai/app/routes/app_pages.dart';
 import 'package:phuonghai/app/ui/common/widgets/default_button.dart';
+import 'package:phuonghai/app/ui/common/widgets/smartph_tips.dart';
+
+import 'header_card.dart';
 
 class DeviceCard extends StatelessWidget {
   const DeviceCard({
@@ -15,67 +18,66 @@ class DeviceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      child: Column(
-        children: [
-          InkWell(
-            onTap: () {
-              final c = Get.find<HomeController>();
-              c.addDetailDevice(model);
-              Get.toNamed(Routes.DEVICE);
-            },
-            splashColor: Colors.transparent,
-            borderRadius: BorderRadius.circular(10),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 12),
-                  Text(
-                    model.friendlyName,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 1),
-                  Text(
-                    "#${model.key}",
-                    style: const TextStyle(
-                      fontSize: 13.5,
-                      fontWeight: FontWeight.bold,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        HeaderCard(model: model),
+        Obx(
+          () => model.isActived.value
+              ? Flexible(
+                  child: Material(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(4),
+                      bottomRight: Radius.circular(4),
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                        left: 18,
+                        right: 18,
+                        bottom: 12,
+                      ),
+                      color: Colors.transparent,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: GetPlatform.isWeb
+                            ? null
+                            : const NeverScrollableScrollPhysics(),
+                        itemCount: model.sensors.length,
+                        itemBuilder: (context, index) => SmartpHSensor(
+                          sensor: model.sensors[index],
+                        ),
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 1),
-                  Text(
-                    "${"lastUpdated".tr}: ${model.getSyncDate}",
-                    textAlign: TextAlign.right,
-                    style: const TextStyle(
-                      fontSize: 13.5,
+                )
+              : Container(
+                  height: 120,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(4),
+                      bottomRight: Radius.circular(4),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  const Divider(
-                    thickness: 1,
-                    height: 1,
-                    color: Colors.black38,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.report,
+                        size: 50,
+                        color: Colors.amber,
+                      ),
+                      Text(
+                        "lostConnection".tr + ": " + model.getSyncDateObs,
+                        style: const TextStyle(color: Colors.red),
+                      )
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            constraints: const BoxConstraints(maxWidth: 320),
-            padding: const EdgeInsets.only(bottom: 10),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (c, i) => SmartpHSensor(sensor: model.sensors[i]),
-              itemCount: model.sensors.length,
-            ),
-          ),
-        ],
-      ),
+                ),
+        ),
+      ],
     );
   }
 }
@@ -95,25 +97,43 @@ class SmartpHSensor extends StatelessWidget {
     return Container(
       height: 46,
       padding: const EdgeInsets.only(top: 10),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: sensor.color == Colors.red
-                ? Colors.red.withOpacity(0.5)
-                : Colors.black12,
-          ),
+          bottom: BorderSide(color: Colors.black12),
         ),
       ),
       child: Row(
         children: [
-          Icon(
-            sensor.icon,
-            size: 22,
-            color: sensor.color,
+          IconButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return const Dialog(child: SmartpHTips());
+                },
+              );
+            },
+            splashRadius: 16,
+            hoverColor: Colors.black26,
+            padding: EdgeInsets.zero,
+            icon: Obx(
+              () => AvatarGlow(
+                repeatPauseDuration: const Duration(seconds: 5),
+                animate: sensor.color.value == Colors.red ||
+                        sensor.color.value == Colors.amber
+                    ? true
+                    : false,
+                glowColor: sensor.color.value,
+                child: Icon(
+                  sensor.icon,
+                  color: sensor.color.value,
+                ),
+                endRadius: 24,
+              ),
+            ),
           ),
-          const SizedBox(width: 5),
           SizedBox(
-            width: 80,
+            width: GetPlatform.isWeb ? 90 : 80,
             child: Text(
               sensor.name.tr,
               overflow: TextOverflow.ellipsis,
@@ -125,14 +145,16 @@ class SmartpHSensor extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Text(
-              "${sensor.value}",
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: sensor.status.toLowerCase() == "error"
-                    ? Colors.grey
-                    : Colors.black,
+            child: Obx(
+              () => Text(
+                "${sensor.val}",
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: sensor.status.toLowerCase() == "error"
+                      ? Colors.grey
+                      : Colors.black,
+                ),
               ),
             ),
           ),
@@ -149,35 +171,27 @@ class SmartpHSensor extends StatelessWidget {
           ),
           SizedBox(
             width: 80,
-            child: Text(
-              sensor.status.toLowerCase().tr,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: sensor.status.toLowerCase() == "error"
-                    ? Colors.grey
-                    : Colors.black,
+            child: Obx(
+              () => Text(
+                sensor.status.toLowerCase().tr,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: sensor.status.toLowerCase() == "error"
+                      ? Colors.grey
+                      : Colors.black,
+                ),
               ),
             ),
           ),
           if (isSetting)
             IconButton(
-              onPressed: () async {
-                if (GetPlatform.isWeb) {
-                  await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Dialog(child: AlarmModal(sensor: sensor));
-                    },
-                  );
-                } else {
-                  showModalBottomSheet(
-                    context: context,
-                    constraints: const BoxConstraints(maxWidth: 420),
-                    builder: (context) {
-                      return AlarmModal(sensor: sensor);
-                    },
-                  );
-                }
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Dialog(child: AlarmModal(sensor: sensor));
+                  },
+                );
               },
               splashRadius: 22,
               padding: EdgeInsets.zero,
@@ -185,6 +199,7 @@ class SmartpHSensor extends StatelessWidget {
                 Icons.edit_notifications_outlined,
                 color: Colors.blueGrey,
               ),
+              tooltip: "settingThres".tr,
             ),
         ],
       ),
@@ -203,13 +218,10 @@ class AlarmModal extends StatefulWidget {
 class _AlarmModalState extends State<AlarmModal> {
   @override
   void initState() {
-    _value = widget.sensor.activeAlarm;
-    if (widget.sensor.activeAlarm) {
-      _minController.text = widget.sensor.minAlarm.toString();
-      _maxController.text = widget.sensor.maxAlarm.toString();
-    }
-
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      initValue();
+    });
   }
 
   @override
@@ -219,100 +231,174 @@ class _AlarmModalState extends State<AlarmModal> {
     super.dispose();
   }
 
-  late bool _value;
+  bool alarmActive = false;
   bool error = false;
   String status = "";
   final _minController = TextEditingController();
   final _maxController = TextEditingController();
+  final listMode = ['outThres'.tr, 'inThres'.tr];
+  String dropdownValue = 'outThres'.tr;
+
+  void initValue() {
+    setState(() {
+      alarmActive = widget.sensor.activeAlarm != 0;
+      if (widget.sensor.activeAlarm != 0) {
+        _minController.text = widget.sensor.minAlarm.toString();
+        _maxController.text = widget.sensor.maxAlarm.toString();
+        dropdownValue = listMode[widget.sensor.activeAlarm - 1];
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        height: GetPlatform.isWeb ? 200 : 400,
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-        constraints: const BoxConstraints(maxWidth: 420),
-        child: Column(
-          children: [
-            ListTile(
-              title: Text("notification".tr + " [${widget.sensor.name}]"),
-              leading: Checkbox(
-                value: _value,
-                onChanged: (newValue) {
-                  setState(() {
-                    _minController.text = '';
-                    _maxController.text = '';
-                    _value = newValue!;
-                  });
-                },
-              ),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+      constraints: const BoxConstraints(maxWidth: 420, maxHeight: 420),
+      child: Column(
+        children: [
+          ListTile(
+            title: Text("notification".tr + " [${widget.sensor.name}]"),
+            leading: Checkbox(
+              value: alarmActive,
+              onChanged: (newValue) {
+                setState(() {
+                  _minController.text = '';
+                  _maxController.text = '';
+                  alarmActive = newValue!;
+                });
+              },
             ),
-            const SizedBox(height: 5),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    enabled: _value,
-                    controller: _minController,
-                    decoration: InputDecoration(
-                      labelText: 'lowerThres'.tr,
-                      prefixIcon: const Icon(Icons.align_vertical_bottom),
+          ),
+          const SizedBox(height: 5),
+          Row(
+            children: [
+              Expanded(
+                child: TextField(
+                  enabled: alarmActive,
+                  controller: _minController,
+                  decoration: InputDecoration(
+                    labelText: 'lowerThres'.tr,
+                    prefixIcon: const Icon(
+                      Icons.align_vertical_bottom,
+                      color: Colors.pink,
                     ),
-                    keyboardType: TextInputType.number,
+                  ),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                    signed: true,
                   ),
                 ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: TextField(
-                    enabled: _value,
-                    controller: _maxController,
-                    decoration: InputDecoration(
-                      labelText: 'upperThres'.tr,
-                      prefixIcon: const Icon(Icons.align_vertical_top),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: TextField(
+                  enabled: alarmActive,
+                  controller: _maxController,
+                  decoration: InputDecoration(
+                    labelText: 'upperThres'.tr,
+                    prefixIcon: const Icon(
+                      Icons.align_vertical_top,
+                      color: Colors.blue,
                     ),
-                    keyboardType: TextInputType.number,
                   ),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                    signed: true,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('modeThres'.tr),
+                    const SizedBox(width: 8),
+                    DropdownButton<String>(
+                      value: dropdownValue,
+                      style: const TextStyle(color: Colors.deepPurple),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.deepPurple,
+                      ),
+                      onChanged: alarmActive
+                          ? (String? value) {
+                              setState(() {
+                                dropdownValue = value!;
+                              });
+                            }
+                          : null,
+                      items: listMode
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ListTile(
+                  leading: const Icon(
+                    Icons.circle,
+                    size: 14,
+                  ),
+                  minLeadingWidth: 10,
+                  title: Text('hintThresOut'.tr),
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.circle,
+                    size: 14,
+                  ),
+                  minLeadingWidth: 10,
+                  title: Text('hintThresIn'.tr),
                 ),
               ],
             ),
-            const Spacer(),
-            DefaultButton(
-              text: 'saveConfig'.tr,
-              press: () {
-                if (_value) {
-                  bool err = false;
-                  try {
-                    final minValue = double.parse(_minController.text);
-                    final maxValue = double.parse(_maxController.text);
-                    if (minValue >= maxValue) {
-                      err = true;
-                    } else {
-                      final c = Get.find<HomeController>();
-                      widget.sensor.activeAlarm = true;
-                      widget.sensor.minAlarm = minValue;
-                      widget.sensor.maxAlarm = maxValue;
-                      c.updateAlarmSensor(widget.sensor);
-                    }
-                  } catch (e) {
+          ),
+          DefaultButton(
+            text: 'saveConfig'.tr,
+            press: () {
+              if (alarmActive) {
+                bool err = false;
+                try {
+                  final minValue = num.parse(_minController.text);
+                  final maxValue = num.parse(_maxController.text);
+                  if (minValue >= maxValue) {
                     err = true;
-                  }
-                  if (err) {
-                    Helper.showError("errorValue".tr);
                   } else {
-                    Navigator.of(context).pop();
-                    Helper.showSuccess("done".tr);
+                    final c = Get.find<HomeController>();
+                    dropdownValue == 'outThres'.tr
+                        ? widget.sensor.activeAlarm = 1
+                        : widget.sensor.activeAlarm = 2;
+                    widget.sensor.minAlarm = minValue;
+                    widget.sensor.maxAlarm = maxValue;
+                    c.updateAlarmSensor(widget.sensor);
                   }
-                } else {
-                  final c = Get.find<HomeController>();
-                  widget.sensor.activeAlarm = false;
-                  c.updateAlarmSensor(widget.sensor);
-                  Navigator.of(context).pop();
-                  Helper.showSuccess("done".tr);
+                } catch (e) {
+                  err = true;
                 }
-              },
-            )
-          ],
-        ),
+                if (err) {
+                  Helper.showError("errorValue".tr);
+                } else {
+                  Navigator.of(context).pop();
+                }
+              } else {
+                final c = Get.find<HomeController>();
+                widget.sensor.activeAlarm = 0;
+                c.updateAlarmSensor(widget.sensor);
+                Navigator.of(context).pop();
+              }
+            },
+          )
+        ],
       ),
     );
   }

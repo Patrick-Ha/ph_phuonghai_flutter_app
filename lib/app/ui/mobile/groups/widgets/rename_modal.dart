@@ -23,7 +23,7 @@ class _RenameModalState extends State<RenameModal> {
 
   @override
   void initState() {
-    _controller.text = widget.group.name;
+    _controller.text = widget.group.name.value;
     super.initState();
   }
 
@@ -37,41 +37,48 @@ class _RenameModalState extends State<RenameModal> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        height: 400,
+        height: 300,
         constraints: const BoxConstraints(maxWidth: 420),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: const EdgeInsets.all(8),
         child: Column(
           children: [
             HeaderModal(title: "renameGroup".tr),
-            TextField(
-              autofocus: true,
-              controller: _controller,
-              decoration: InputDecoration(
-                labelText: "name".tr,
-                helperText: 'hintCreateGroup'.tr,
+            Expanded(
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                child: Column(
+                  children: [
+                    TextField(
+                      autofocus: true,
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        labelText: "name".tr,
+                        prefixIcon: const Icon(Icons.widgets),
+                      ),
+                    ),
+                    const Spacer(),
+                    DefaultButton(
+                      text: 'confirm'.tr,
+                      press: () async {
+                        if (_controller.text == widget.group.name.value) {
+                          Navigator.of(context).pop();
+                        } else {
+                          Helper.showLoading('loading'.tr);
+                          final c = Get.find<HomeController>();
+
+                          await c.renameGroup(
+                              widget.group.id, _controller.text);
+                          widget.group.name.value = _controller.text;
+
+                          Helper.dismiss();
+                          Navigator.of(context).pop();
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const Spacer(),
-            DefaultButton(
-              text: 'confirm'.tr,
-              press: () {
-                final c = Get.find<HomeController>();
-                if (_controller.text == widget.group.name) {
-                  Navigator.of(context).pop();
-                  Helper.showSuccess("done".tr);
-                } else {
-                  final index = c.listGroup.value
-                      .indexWhere((i) => i.name == _controller.text);
-                  if (index == -1) {
-                    c.renameGroup(widget.group.name, _controller.text);
-                    widget.group.name = _controller.text;
-                    Navigator.of(context).pop();
-                    Helper.showSuccess("done".tr);
-                  } else {
-                    Helper.showError("errorGroup".tr);
-                  }
-                }
-              },
             ),
           ],
         ),

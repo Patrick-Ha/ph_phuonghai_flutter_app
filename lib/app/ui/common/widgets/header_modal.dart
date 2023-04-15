@@ -1,4 +1,3 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 
 class HeaderModal extends StatelessWidget {
@@ -9,25 +8,20 @@ class HeaderModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Row(
-        children: [
-          IconButton(
-            splashRadius: 22,
-            icon: const Icon(
-              EvaIcons.close,
-              size: 30,
+      child: SizedBox(
+        child: Row(
+          children: [
+            IconButton(
+              splashRadius: 22,
+              icon: const Icon(Icons.close),
+              onPressed: () => Navigator.of(context).pop(),
             ),
-            padding: EdgeInsets.zero,
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+            Text(
+              title,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

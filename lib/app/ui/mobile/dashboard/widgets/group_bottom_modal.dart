@@ -18,19 +18,19 @@ class GroupBottomModal extends StatelessWidget {
             HeaderModal(title: "groupDisplay".tr),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: c.listGroup.value.length,
+              itemCount: c.allGroups.length,
               itemBuilder: ((context, index) {
-                if (index == c.groupIndex.value) {
+                if (index == c.selectedGroup.value) {
                   return GroupTitle(
-                    text: c.listGroup.value[index].name.tr,
+                    text: c.allGroups[index].name.value,
                     select: true,
                     onTap: () => Navigator.of(context).pop(),
                   );
                 } else {
                   return GroupTitle(
-                    text: c.listGroup.value[index].name.tr,
+                    text: c.allGroups[index].name.value,
                     onTap: () {
-                      c.groupIndex.value = index;
+                      c.selectedGroup.value = index;
                       Navigator.of(context).pop();
                     },
                   );

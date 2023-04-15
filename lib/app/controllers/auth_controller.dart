@@ -1,68 +1,64 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:phuonghai/app/helper/helper.dart';
+import 'package:phuonghai/app/Helper/helper.dart';
+import 'package:phuonghai/app/data/models/user.dart';
 
-const baseUrl = 'https://thegreenlab.xyz/Users/Auth';
+const baseUrl = 'http://thegreenlab.xyz:3000/Users/Auth';
 
 class AuthController extends GetxController {
   bool isLogged = false;
+  final _dio = Dio();
+  late final Box boxAuth;
 
   @override
   void onInit() async {
     super.onInit();
-    EasyLoading.instance
-      ..loadingStyle = EasyLoadingStyle.light
-      ..userInteractions = false
-      ..progressColor = Colors.amber
-      ..backgroundColor = Colors.white
-      ..indicatorColor = Colors.red
-      ..textColor = Colors.black
-      ..maskColor = Colors.black26;
-    final boxAuth = await Hive.openBox("authentication");
-    isLogged = boxAuth.get("isLoggedIn", defaultValue: false);
+    boxAuth = await Hive.openBox("authentication");
+    final log = boxAuth.get("isLogged");
+    if (log == null) {
+      isLogged = false;
+    } else {
+      isLogged = true;
+    }
   }
 
-  Future<bool> login(String email, String pwd) async {
-    bool error = true;
-    final _dio = Dio();
+  Future<int> login(String email, String pwd) async {
+    int error = 0; // 0: not error, 1: no internet, 2: wrong pass, 3: ??
+    try {
+      final response = await _dio.post(
+        baseUrl + '/Login',
+        data: {'Email': email, 'Password': pwd},
+      );
 
-    if (email.length <= 6 || pwd.length < 6) {
-      Helper.showError("emailTooShort".tr);
-    } else {
-      try {
-        final response = await _dio.post(
-          baseUrl + '/Login',
-          data: {'Email': email, 'Password': pwd},
+      print(response.data);
+
+      if (response.data == "") {
+        error = 2;
+      } else {
+        final token = base64.encode(utf8.encode("$email:$pwd"));
+        final user = UserModel(
+          id: response.data['Id'],
+          email: response.data['Email'],
+          token: "Basic $token",
         );
-
-        if (response.data == "") {
-          Helper.showError("wrongIdOrPass".tr);
-        } else {
-          error = false;
-        }
-      } on DioError {
-        Helper.showError("noInternet".tr);
-      } catch (e) {
-        Helper.showError("somethingWentWrong".tr);
+        await boxAuth.put("isLogged", user.toJson());
       }
+    } on DioError catch (err) {
+      debugPrint(err.toString());
+      error = 1;
+    } catch (e) {
+      debugPrint(e.toString());
+      error = 3;
     }
-
-    if (!error) {
-      final boxAuth = await Hive.openBox("authentication");
-      boxAuth.put("isLoggedIn", true);
-      boxAuth.put("email", email);
-      boxAuth.put("pwd", pwd);
-    }
-
     return error;
   }
 
   void signUp(String email, String pwd) async {
-    final _dio = Dio();
-
     if (GetUtils.isEmail(email)) {
       if (pwd.length < 6) {
         Helper.showError("pwdTooShort".tr);
@@ -72,7 +68,6 @@ class AuthController extends GetxController {
             baseUrl + '/Register',
             data: {'Email': email, 'Password': pwd},
           );
-
           if (response.data.containsKey('message')) {
             Helper.showError("signUpError".tr);
           } else {
@@ -89,11 +84,31 @@ class AuthController extends GetxController {
     } else {
       Helper.showError("isValidEmail".tr);
     }
+    EasyLoading.dismiss();
   }
 
-  void logOut() async {
-    final boxAuth = await Hive.openBox("authentication");
-    boxAuth.put("isLoggedIn", false);
+  void forgotPassword(String email) async {
+    if (GetUtils.isEmail(email)) {
+      try {
+        final response = await _dio.post(
+          baseUrl + '/ForgetPass',
+          data: {'email': email},
+        );
+        if (response.statusCode == 400) {
+          Helper.showError("accountNotFound".tr);
+        } else {
+          Helper.showSuccess("forgotPwdDone".tr);
+        }
+      } on DioError catch (e) {
+        Helper.showError("noInternet".tr + " ${e.response!.statusCode}");
+      } catch (e) {
+        debugPrint(e.toString());
+        Helper.showError("somethingWentWrong".tr);
+      }
+    } else {
+      Helper.showError("isValidEmail".tr);
+    }
+    EasyLoading.dismiss();
   }
 
   // End

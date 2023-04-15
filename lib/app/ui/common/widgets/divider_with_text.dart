@@ -3,38 +3,38 @@ import 'package:flutter/material.dart';
 class DividerWithText extends StatelessWidget {
   const DividerWithText({
     Key? key,
-    this.colorUser = const Color(0xff9e9e9e),
     required this.text,
   }) : super(key: key);
 
-  final Color colorUser;
   final String text;
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
-          child: SizedBox(child: Divider(thickness: 1, color: colorUser)),
+        const Expanded(
+          child: Divider(
+            color: Colors.black45,
+            height: 0.8,
+          ),
         ),
         Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(vertical: 2.5, horizontal: 8),
-          constraints: const BoxConstraints(minWidth: 120),
+          padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 6),
           decoration: BoxDecoration(
-            color: colorUser,
-            borderRadius: BorderRadius.circular(16),
+            color: Colors.black12,
+            borderRadius: BorderRadius.circular(22),
           ),
           child: Text(
             text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 13,
-            ),
+            style: const TextStyle(fontSize: 13.5),
           ),
         ),
-        Expanded(
-          child: SizedBox(child: Divider(thickness: 1, color: colorUser)),
+        const Expanded(
+          child: Divider(
+            height: 0.8,
+            color: Colors.black45,
+          ),
         ),
       ],
     );

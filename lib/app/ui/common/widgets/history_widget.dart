@@ -1,17 +1,16 @@
 import 'package:dio/dio.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:group_button/group_button.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:fast_csv/fast_csv.dart' as _fast_csv;
-import 'package:paged_vertical_calendar/paged_vertical_calendar.dart';
 import 'package:phuonghai/app/controllers/home_controller.dart';
 import 'package:phuonghai/app/helper/helper.dart';
 import 'package:phuonghai/app/ui/common/widgets/default_button.dart';
 import 'package:phuonghai/app/ui/common/widgets/header_modal.dart';
+import 'package:scrollable_clean_calendar/controllers/clean_calendar_controller.dart';
+import 'package:scrollable_clean_calendar/scrollable_clean_calendar.dart';
+import 'package:scrollable_clean_calendar/utils/enums.dart';
 
 import 'chart.dart';
 
@@ -32,39 +31,35 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   final List<String> dateList = [];
   final List<double> valueList = [];
   final Dio dio = Dio();
-  final baseUrl = "https://thegreenlab.xyz/Datums";
 
   getDataByDate() async {
+    if (widget.sensors.isEmpty) return;
     try {
       final response = await dio.get(
-        baseUrl +
-            '/DataByDate?DeviceSerialNumber=${widget.sensors[0].key}&StartDate=$setDate&EndDate=$setDate',
+        'http://thegreenlab.xyz:3000/Datums/DataByDateJson?DeviceSerialNumber=${widget.sensors[0].key}&StartDate=$setDate&EndDate=$setDate',
         options: Options(
           headers: {
             "Content-Type": "application/json",
             "Authorization":
-                "Basic ZHJhZ29ubW91bnRhaW4ucHJvamVjdEBnbWFpbC5jb206TG9uZ1Nvbn5e", // set content-length
+                "Basic ZHJhZ29ubW91bnRhaW4ucHJvamVjdEBnbWFpbC5jb206TG9uZ1Nvbn5e",
           },
         ),
       );
 
-      final result = _fast_csv.parse(response.data);
-      result.removeAt(0);
       dateList.clear();
       valueList.clear();
-      if (result.length > 1) {
-        for (var item in result) {
-          if (item[2] ==
+      if (response.data.length > 1) {
+        for (var item in response.data) {
+          if (item['SensorType'] ==
               widget.sensors[groupButtonController.selectedIndex!].name) {
-            dateList.add(item[0]);
-            valueList.add(double.parse(item[3]));
+            dateList.add(item['Date']);
+            valueList.add(item['Value'].toDouble());
           }
         }
       }
 
       final resp = await dio.get(
-        baseUrl +
-            '/StatisticDataBySensor?DeviceSerialNumber=${widget.sensors[0].key}&StartDate=$setDate&EndDate=$setDate',
+        'http://thegreenlab.xyz:3000/Datums/StatisticDataBySensor?DeviceSerialNumber=${widget.sensors[0].key}&StartDate=$setDate&EndDate=$setDate',
         options: Options(
           headers: {
             "Content-Type": "application/json",
@@ -99,18 +94,16 @@ class _HistoryWidgetState extends State<HistoryWidget> {
 
   @override
   void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       groupButtonController.selectIndex(0);
       getDataByDate();
     });
-
-    super.initState();
   }
 
   @override
   void dispose() {
     groupButtonController.dispose();
-    dio.close(force: true);
     super.dispose();
   }
 
@@ -118,8 +111,9 @@ class _HistoryWidgetState extends State<HistoryWidget> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2018),
+      firstDate: DateTime(2020),
       lastDate: DateTime.now(),
+      locale: Get.locale,
     );
 
     if (picked != null) {
@@ -139,22 +133,24 @@ class _HistoryWidgetState extends State<HistoryWidget> {
             children: [
               if (GetPlatform.isWeb)
                 OutlinedButton.icon(
-                  icon: const Icon(EvaIcons.download),
+                  icon: const Icon(Icons.download),
                   label: Text('download'.tr),
                   onPressed: () async {
-                    showModalBottomSheet(
+                    await showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
                       constraints: const BoxConstraints(maxWidth: 420),
                       builder: (context) {
-                        return const DownloadModal();
+                        return DownloadModal(
+                          sn: widget.sensors[0].key,
+                        );
                       },
                     );
                   },
                 ),
               const Spacer(),
               OutlinedButton.icon(
-                icon: const Icon(EvaIcons.calendar),
+                icon: const Icon(Icons.date_range),
                 label: Text(setDate),
                 onPressed: () async {
                   final isLoad = await _selectDate();
@@ -174,10 +170,9 @@ class _HistoryWidgetState extends State<HistoryWidget> {
             ? SizedBox(
                 height: 250,
                 child: Center(
-                  child: LoadingAnimationWidget.discreteCircle(
+                  child: LoadingAnimationWidget.hexagonDots(
                     color: Colors.green,
                     size: 50,
-                    secondRingColor: Colors.purple,
                   ),
                 ),
               )
@@ -221,7 +216,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
-            color: Colors.grey[200],
+            color: Colors.grey.shade100,
           ),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: GroupButton(
@@ -258,135 +253,71 @@ class _HistoryWidgetState extends State<HistoryWidget> {
 }
 
 class DownloadModal extends StatefulWidget {
-  const DownloadModal({Key? key}) : super(key: key);
+  final String sn;
+  const DownloadModal({Key? key, required this.sn}) : super(key: key);
 
   @override
   State<DownloadModal> createState() => _DownloadModalState();
 }
 
 class _DownloadModalState extends State<DownloadModal> {
-  DateTime? start;
-  DateTime? end;
-
-  /// method to check wether a day is in the selected range
-  /// used for highlighting those day
-  bool isInRange(DateTime date) {
-    // if start is null, no date has been selected yet
-    if (start == null) return false;
-    // if only end is null only the start should be highlighted
-    if (end == null) return date == start;
-    // if both start and end aren't null check if date false in the range
-    return ((date == start || date.isAfter(start!)) &&
-        (date == end || date.isBefore(end!)));
-  }
+  DateTime? start, end;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.9,
+      height: Get.height * 0.9,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      constraints: const BoxConstraints(maxWidth: 420),
       child: Column(
         children: [
-          HeaderModal(title: "download".tr),
+          HeaderModal(title: 'download'.tr),
           Expanded(
-            child: PagedVerticalCalendar(
-              addAutomaticKeepAlives: true,
-              minDate: DateTime.now().subtract(const Duration(days: 365)),
-              maxDate: DateTime.now(),
-              startWeekWithSunday: true,
-              dayBuilder: (context, date) {
-                // update the days color based on if it's selected or not
-                final color =
-                    isInRange(date) ? Colors.greenAccent : Colors.transparent;
-                return Container(
-                  color: color,
-                  child: Center(
-                    child: Text(DateFormat('d').format(date)),
-                  ),
-                );
-              },
-              monthBuilder: (context, month, year) {
-                return Column(
-                  children: [
-                    /// create a customized header displaying the month and year
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 20),
-                      margin: const EdgeInsets.all(20),
-                      decoration: const BoxDecoration(
-                        color: Colors.blueGrey,
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                      ),
-                      child: Text(
-                        DateFormat('MMMM yyyy').format(DateTime(year, month)),
-                        style: const TextStyle(color: Colors.white),
-                      ),
-                    ),
-
-                    /// add a row showing the weekdays
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          weekText('Mo'),
-                          weekText('Tu'),
-                          weekText('We'),
-                          weekText('Th'),
-                          weekText('Fr'),
-                          weekText('Sa'),
-                          weekText('Su'),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              },
-              onDayPressed: (date) async {
-                setState(() {
-                  // if start is null, assign this date to start
-                  if (start == null) {
-                    start = date;
-                  } else if (end == null) {
-                    end = date;
-                  } else {
-                    start = null;
-                    end = null;
-                  }
-                });
-              },
+            child: ScrollableCleanCalendar(
+              calendarController: CleanCalendarController(
+                maxDate: DateTime.now(),
+                minDate: DateTime(2020),
+                onRangeSelected: (firstDate, secondDate) {
+                  start = firstDate;
+                  end = secondDate;
+                },
+                initialFocusDate: DateTime.now(),
+              ),
+              layout: Layout.BEAUTY,
+              calendarCrossAxisSpacing: 0,
+              locale: Get.locale!.languageCode,
             ),
           ),
-          const SizedBox(height: 10),
           DefaultButton(
-            text: "down".tr,
+            text: 'down'.tr.toUpperCase(),
             press: () async {
-              if (start != null && end != null) {
-                Helper.showLoading("loading".tr);
+              if (start == null && end == null) {
+                Helper.showError('downloadWrongDate'.tr);
+              } else if (end == null) {
+                Helper.showLoading('loading'.tr);
                 final c = Get.find<HomeController>();
-                final s = DateFormat('yyyy-MM-dd').format(start!);
-                final e = DateFormat('yyyy-MM-dd').format(end!);
-                await c.apiClient.downloadData(c.detailDevice[0].key, s, e);
-                EasyLoading.dismiss();
+                final r = await c.apiClient.downloadData(
+                  widget.sn,
+                  DateFormat('yyyy-MM-dd').format(start!),
+                  DateFormat('yyyy-MM-dd').format(start!),
+                );
+                Helper.dismiss();
+                Navigator.of(context).pop();
+                if (!r) Helper.showError('error'.tr);
               } else {
-                Helper.showError("downloadWrongDate".tr);
+                Helper.showLoading('loading'.tr);
+                final c = Get.find<HomeController>();
+                final r = await c.apiClient.downloadData(
+                  widget.sn,
+                  DateFormat('yyyy-MM-dd').format(start!),
+                  DateFormat('yyyy-MM-dd').format(end!),
+                );
+                Helper.dismiss();
+                Navigator.of(context).pop();
+                if (!r) Helper.showError('error'.tr);
               }
             },
           ),
-          const SizedBox(height: 20),
         ],
-      ),
-    );
-  }
-
-  Widget weekText(String text) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Text(
-        text,
-        style: const TextStyle(color: Colors.grey, fontSize: 10),
       ),
     );
   }

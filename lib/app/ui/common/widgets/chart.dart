@@ -58,7 +58,7 @@ class LineChartWidget extends StatelessWidget {
         border: Border.all(color: Colors.grey, width: 1),
       ),
       minX: 0,
-      minY: 0,
+      //minY: 0,
       lineBarsData: [
         LineChartBarData(
           spots: valueList.asMap().entries.map((e) {

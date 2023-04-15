@@ -11,11 +11,9 @@ abstract class Routes {
 
   static const HOME = '/home';
   static const SETTINGS = '/settings';
-  static const BLUETOOTH = '/bluetooth';
-  static const BLE_DEVICE = '/ble_device';
 
-  static const DEVICE = '/device';
   static const IAQ_DEVICE = '/iaq_device';
 
-  static const WEB_HOME = '/web_home';
+  static const WEB_HOME = '/dashboard';
+  static const DETAILS_MAP = '/details_map';
 }

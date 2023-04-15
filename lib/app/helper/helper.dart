@@ -11,12 +11,11 @@ class Helper {
 
   static void showError(String status) {
     EasyLoading.instance
-      ..indicatorColor = Colors.red
+      ..indicatorColor = Colors.yellowAccent
+      ..textColor = Colors.white
+      ..backgroundColor = Colors.red
       ..loadingStyle = EasyLoadingStyle.custom;
-    EasyLoading.showError(
-      status,
-      maskType: EasyLoadingMaskType.custom,
-    );
+    EasyLoading.showError(status);
   }
 
   static void showLoading(String status) {
@@ -27,17 +26,16 @@ class Helper {
     );
   }
 
-  static void showSuccess(String status) {
-    EasyLoading.instance
-      ..indicatorColor = Colors.green
-      ..loadingStyle = EasyLoadingStyle.custom;
-    EasyLoading.showSuccess(
-      status,
-      maskType: EasyLoadingMaskType.custom,
-    );
+  static void dismiss() {
+    EasyLoading.dismiss();
   }
 
-  static void dismissLoad() {
-    if (EasyLoading.isShow) EasyLoading.dismiss();
+  static void showSuccess(String status) {
+    EasyLoading.instance
+      ..indicatorColor = Colors.yellowAccent
+      ..textColor = Colors.white
+      ..backgroundColor = Colors.green
+      ..loadingStyle = EasyLoadingStyle.custom;
+    EasyLoading.showSuccess(status);
   }
 }

@@ -1,5 +1,3 @@
-import 'package:badges/badges.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phuonghai/app/controllers/home_controller.dart';
@@ -8,130 +6,278 @@ import 'package:phuonghai/app/helper/helper.dart';
 import 'package:phuonghai/app/ui/common/widgets/confirm_dialog.dart';
 import 'package:phuonghai/app/ui/common/widgets/device_card.dart';
 import 'package:phuonghai/app/ui/common/widgets/iaq_card.dart';
+import 'package:phuonghai/app/ui/desktop/dashboard/widgets/environ_card_web.dart';
+import 'package:phuonghai/app/ui/desktop/dashboard/widgets/refrigerator_card_web.dart';
+import 'package:phuonghai/app/ui/common/widgets/templog_card.dart';
 import 'package:phuonghai/app/ui/mobile/groups/widgets/add_device_modal.dart';
 import 'package:phuonghai/app/ui/mobile/groups/widgets/rename_modal.dart';
 
-class GroupWeb extends StatelessWidget {
-  const GroupWeb({Key? key, required this.group}) : super(key: key);
+class GroupWebT extends StatefulWidget {
+  const GroupWebT({Key? key, required this.group}) : super(key: key);
   final GroupModel group;
+
+  @override
+  State<GroupWebT> createState() => _GroupWebTState();
+}
+
+class _GroupWebTState extends State<GroupWebT> {
+  final _controller = ScrollController();
+  final c = Get.find<HomeController>();
+  final hover = false.obs;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 380,
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(4),
-      ),
+      constraints: const BoxConstraints(maxHeight: 670),
+      padding: const EdgeInsets.only(bottom: 1),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 50,
-            padding: const EdgeInsets.all(5),
-            alignment: Alignment.centerLeft,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      Badge(
-                        elevation: 0,
-                        badgeColor: Colors.green,
-                        badgeContent: Text(
-                          '${group.devices.length}',
-                          style: const TextStyle(color: Colors.white),
-                        ),
-                        child: const Icon(
-                          EvaIcons.gridOutline,
-                          color: Colors.black54,
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Text(
-                        group.name.tr,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ),
-                if (group.name != 'allDevices') ...[
+          Material(
+            color: Colors.white54,
+            child: Container(
+              height: 45,
+              color: Colors.transparent,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
                   IconButton(
                     splashRadius: 18,
-                    iconSize: 20,
-                    color: Colors.black54,
+                    icon: Obx(
+                      () => widget.group.visible.value
+                          ? Icon(
+                              Icons.expand_less,
+                              color: hover.value ? Colors.white : null,
+                            )
+                          : Icon(
+                              Icons.expand_more,
+                              color: hover.value ? Colors.white : null,
+                            ),
+                    ),
+                    onPressed: () => widget.group.visible.toggle(),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onHover: (value) => hover.value = value,
+                      onTap: () => widget.group.visible.toggle(),
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      child: Row(
+                        children: [
+                          Obx(
+                            () => Text(
+                              widget.group.name.value,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 26,
+                            constraints: const BoxConstraints(minWidth: 28),
+                            margin: const EdgeInsets.only(left: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Obx(
+                              () => Text(
+                                widget.group.devices.length.toString(),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    splashRadius: 18,
+                    iconSize: 22,
                     tooltip: 'addDevice'.tr,
                     icon: const Icon(Icons.exposure_outlined),
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Dialog(child: AddDeviceModal(group: group));
-                      },
-                    ),
+                    onPressed: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                              child: AddDeviceModal(group: widget.group));
+                        },
+                      );
+                    },
                   ),
                   IconButton(
                     splashRadius: 18,
                     iconSize: 22,
                     tooltip: 'renameGroup'.tr,
-                    color: Colors.black54,
-                    icon: const Icon(EvaIcons.editOutline),
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Dialog(child: RenameModal(group: group));
-                      },
-                    ),
+                    icon: const Icon(Icons.edit_outlined),
+                    onPressed: () async {
+                      await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            child: RenameModal(group: widget.group),
+                          );
+                        },
+                      );
+                    },
                   ),
                   IconButton(
                     splashRadius: 18,
                     iconSize: 22,
                     tooltip: 'deleteGroup'.tr,
-                    color: Colors.black54,
-                    icon: const Icon(EvaIcons.close),
+                    icon: const Icon(Icons.close),
                     onPressed: () async {
-                      final ret = await confirmDialog(
-                        context,
-                        "deleteGroup".tr,
-                        "areUSure".tr,
-                      );
-                      if (ret) {
+                      final confirm = await confirmDialog(
+                          context, 'deleteGroup'.tr, 'areUSure'.tr);
+                      if (confirm) {
+                        Helper.showLoading('loading'.tr);
                         final c = Get.find<HomeController>();
-                        c.deleteGroup(group.name);
-                        Helper.showSuccess("done".tr);
+                        await c.deleteGroup(widget.group.id);
+                        Helper.dismiss();
                       }
                     },
                   ),
                 ],
-              ],
+              ),
             ),
           ),
-          Expanded(
-              child: group.devices.isEmpty
-                  ? Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.browser_not_supported_outlined),
-                          const SizedBox(width: 10),
-                          Text(
-                            "noDevice".tr,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                        ],
-                      ),
-                    )
-                  : ListView.separated(
-                      itemBuilder: (context, index) {
-                        if (group.devices[index].type == "Air Node") {
-                          return IaqCard(model: group.devices[index]);
+          Obx(
+            () => Visibility(
+              visible: widget.group.visible.value,
+              maintainState: true,
+              // child: Expanded(
+              //   child: Scrollbar(
+              //     thickness: 8,
+              //     radius: const Radius.circular(22),
+              //     trackVisibility: true,
+              //     thumbVisibility: true,
+              //     controller: _controller,
+              //     child: ListView.builder(
+              //       controller: _controller,
+              //       shrinkWrap: true,
+              //       scrollDirection: Axis.horizontal,
+              //       padding: const EdgeInsets.only(
+              //         left: 12,
+              //         top: 10,
+              //         bottom: 16,
+              //       ),
+              //       itemBuilder: (context, index) {
+              //         if (widget.group.devices[index].type == 'Air Node') {
+              //           return Container(
+              //             constraints: const BoxConstraints(maxWidth: 360),
+              //             margin: const EdgeInsets.only(right: 8),
+              //             child: IaqCard(model: widget.group.devices[index]),
+              //           );
+              //         } else if (widget.group.devices[index].type ==
+              //             'TempLog') {
+              //           return Container(
+              //             constraints: const BoxConstraints(maxWidth: 360),
+              //             margin: const EdgeInsets.only(right: 8),
+              //             child: TempLogCard(
+              //               model: widget.group.devices[index],
+              //             ),
+              //           );
+              //         } else if (widget.group.devices[index].type ==
+              //             'Refrigerator') {
+              //           return Container(
+              //             constraints: const BoxConstraints(maxWidth: 420),
+              //             margin: const EdgeInsets.only(right: 8),
+              //             child: RefrigeratorCardWeb(
+              //               model: widget.group.devices[index],
+              //             ),
+              //           );
+              //         } else {
+              //           return Container(
+              //             constraints: const BoxConstraints(maxWidth: 360),
+              //             margin: const EdgeInsets.only(right: 8),
+              //             child: DeviceCard(model: widget.group.devices[index]),
+              //           );
+              //         }
+              //       },
+              //       itemCount: widget.group.devices.length,
+              //     ),
+              //   ),
+              // ),
+              child: Scrollbar(
+                thickness: 8,
+                radius: const Radius.circular(22),
+                controller: _controller,
+                trackVisibility: true,
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    left: 12,
+                    top: 12,
+                    bottom: 22,
+                  ),
+                  scrollDirection: Axis.horizontal,
+                  controller: _controller,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: List.generate(
+                      widget.group.devices.length,
+                      (index) {
+                        if (widget.group.devices[index].type == 'Air Node') {
+                          return Container(
+                            constraints: const BoxConstraints(maxWidth: 360),
+                            margin: const EdgeInsets.only(right: 8),
+                            child: IaqCard(model: widget.group.devices[index]),
+                          );
+                        } else if (widget.group.devices[index].type ==
+                            'TempLog') {
+                          return Container(
+                            constraints: const BoxConstraints(maxWidth: 360),
+                            margin: const EdgeInsets.only(right: 8),
+                            child: TempLogCard(
+                              model: widget.group.devices[index],
+                            ),
+                          );
+                        } else if (widget.group.devices[index].type ==
+                            'Refrigerator') {
+                          return Container(
+                            constraints: const BoxConstraints(maxWidth: 440),
+                            margin: const EdgeInsets.only(right: 8),
+                            child: RefrigeratorCardWeb(
+                              model: widget.group.devices[index],
+                            ),
+                          );
+                          // }
+                          // else if (widget.group.devices[index].type ==
+                          //     'Refrigerator') {
+                          //   return Container(
+                          //     constraints: const BoxConstraints(maxWidth: 400),
+                          //     margin: const EdgeInsets.only(right: 8),
+                          //     child: EnvironCardWeb(
+                          //       model: widget.group.devices[index],
+                          //     ),
+                          //   );
                         } else {
-                          return DeviceCard(model: group.devices[index]);
+                          return Container(
+                            constraints: const BoxConstraints(maxWidth: 360),
+                            margin: const EdgeInsets.only(right: 8),
+                            child:
+                                DeviceCard(model: widget.group.devices[index]),
+                          );
                         }
                       },
-                      itemCount: group.devices.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 10),
-                    )),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
