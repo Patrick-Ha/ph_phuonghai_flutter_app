@@ -40,15 +40,20 @@ class _SmartpHDevicePageState extends State<SmartpHDevicePage> {
                 child: ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (c, i) => SmartpHSensor(
-                    sensor: widget.model.sensors[i],
-                    isSetting: true,
-                  ),
+                  itemBuilder: (c, i) {
+                    if (widget.model.sensors[i].name == ' FTP') {
+                      return FTPConnection(sensor: widget.model.sensors[i]);
+                    }
+                    return SmartpHSensor(
+                      sensor: widget.model.sensors[i],
+                      isSetting: true,
+                    );
+                  },
                   itemCount: widget.model.sensors.length,
                 ),
               ),
               DividerWithText(text: 'dataHistory'.tr),
-              HistoryWidget(sensors: widget.model.sensors),
+              NewWidget(widget: widget),
               const SizedBox(height: 10),
               DeviceInfo(model: widget.model),
             ],
@@ -56,5 +61,20 @@ class _SmartpHDevicePageState extends State<SmartpHDevicePage> {
         ),
       ),
     );
+  }
+}
+
+class NewWidget extends StatelessWidget {
+  const NewWidget({
+    Key? key,
+    required this.widget,
+  }) : super(key: key);
+
+  final SmartpHDevicePage widget;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = widget.model.sensors.skipWhile((value) => value.name == ' FTP');
+    return HistoryWidget(sensors: l.toList());
   }
 }

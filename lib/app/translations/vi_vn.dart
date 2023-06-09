@@ -94,6 +94,9 @@ const Map<String, String> vi_VN = {
   "alarmTooltip": "Giá trị cảnh báo",
   "errorTooltip": "Cảm biến / thiết bị bị lỗi",
   "statisticsOfTheDay": "Thống kê trong ngày",
+  "disable": "Không cho phép",
+  " FTP": "Kết nối FTP",
+  "succeeded": "Thành công",
 
   // For detail device page
   "chart": "Biểu đồ",
@@ -125,6 +128,8 @@ const Map<String, String> vi_VN = {
   "emptyTextField": "Không được để trống",
   "createDeviceErr": "Thiết bị đã tồn tại",
   "reloadForUpdate": "Tải lại trang để cập nhập",
+  "selectDateToDown": "Chọn thời gian tải dữ liệu:",
+  "chartByDate": "Biểu đồ theo ngày:",
 
   // Alarm sensor
   "notification": "Thông báo",
@@ -205,4 +210,14 @@ const Map<String, String> vi_VN = {
   "Fr": "T6",
   "Sa": "T7",
   "Su": "CN",
+
+  // Enviromental Card
+  "stop": "Không hoạt động",
+  "running": "Đang hoạt động",
+  "heater": "Gia nhiệt",
+  "cooler": "Làm lạnh",
+  "humiditier": "Tách ẩm",
+  "moiser": "Tạo ẩm",
+  "temp_now": "Nhiệt độ thực tế",
+  "hum_now": "Độ ẩm thực tế",
 };

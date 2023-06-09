@@ -1,5 +1,4 @@
 import 'package:avatar_glow/avatar_glow.dart';
-import 'package:battery_indicator/battery_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phuonghai/app/data/models/refrigerator.dart';
@@ -104,11 +103,11 @@ class RefriItemWidget extends StatelessWidget {
                         color: Colors.orangeAccent,
                       )
                     : const SizedBox(width: 5),
-                BatteryIndicator(
-                  batteryFromPhone: false,
-                  batteryLevel: sensor.pin.val.value.toInt(),
-                  style: BatteryIndicatorStyle.skeumorphism,
-                ),
+                // BatteryIndicator(
+                //   batteryFromPhone: false,
+                //   batteryLevel: sensor.pin.val.value.toInt(),
+                //   style: BatteryIndicatorStyle.skeumorphism,
+                // ),
               ],
             ),
           ),

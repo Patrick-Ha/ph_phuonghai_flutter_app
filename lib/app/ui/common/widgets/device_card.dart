@@ -44,9 +44,12 @@ class DeviceCard extends StatelessWidget {
                             ? null
                             : const NeverScrollableScrollPhysics(),
                         itemCount: model.sensors.length,
-                        itemBuilder: (context, index) => SmartpHSensor(
-                          sensor: model.sensors[index],
-                        ),
+                        itemBuilder: (context, index) {
+                          if (model.sensors[index].name == ' FTP') {
+                            return FTPConnection(sensor: model.sensors[index]);
+                          }
+                          return SmartpHSensor(sensor: model.sensors[index]);
+                        },
                       ),
                     ),
                   ),
@@ -133,7 +136,7 @@ class SmartpHSensor extends StatelessWidget {
             ),
           ),
           SizedBox(
-            width: GetPlatform.isWeb ? 90 : 80,
+            width: GetPlatform.isWeb ? 110 : 80,
             child: Text(
               sensor.name.tr,
               overflow: TextOverflow.ellipsis,
@@ -399,6 +402,49 @@ class _AlarmModalState extends State<AlarmModal> {
             },
           )
         ],
+      ),
+    );
+  }
+}
+
+class FTPConnection extends StatelessWidget {
+  const FTPConnection({Key? key, required this.sensor}) : super(key: key);
+
+  final SensorModel sensor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => Container(
+        height: 46,
+        padding: const EdgeInsets.all(12),
+        margin: const EdgeInsets.only(top: 12),
+        decoration: BoxDecoration(
+          color: sensor.status.toLowerCase() == 'succeeded'
+              ? Colors.green.shade50
+              : sensor.status.toLowerCase() == 'error'
+                  ? Colors.red.shade50
+                  : Colors.blueGrey.shade50,
+          borderRadius: BorderRadius.circular(22),
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 90,
+              child: Text(
+                sensor.name.tr,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            Expanded(
+              child: Text(
+                sensor.status.toLowerCase().tr,
+                textAlign: TextAlign.right,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

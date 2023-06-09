@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:phuonghai/app/data/models/device.dart';
-import 'package:phuonghai/app/data/models/refrigerator.dart';
+import 'package:get/get.dart';
+import 'package:phuonghai/app/data/models/enviro_chamber.dart';
 import 'package:phuonghai/app/ui/common/widgets/header_card.dart';
 
 class EnvironCardWeb extends StatelessWidget {
@@ -9,7 +9,7 @@ class EnvironCardWeb extends StatelessWidget {
     required this.model,
   }) : super(key: key);
 
-  final Refrigerator model;
+  final EnviroChamberModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -27,28 +27,40 @@ class EnvironCardWeb extends StatelessWidget {
           ),
           child: Column(
             children: [
+              const SizedBox(width: 5),
               Row(
                 children: [
+                  const SizedBox(width: 6),
                   Expanded(
                     flex: 2,
                     child: ListTile(
-                      leading: SizedBox(
+                      leading: const SizedBox(
                           height: double.infinity,
-                          child: Icon(Icons.pause_circle)),
-                      title: Text('Đang hoạt động'),
-                      subtitle: Text('Trạng thái thiết bị'),
+                          child: Icon(Icons.monitor_heart)),
+                      subtitle: Obx(() => Text(
+                            model.operation.value.tr,
+                            style: TextStyle(
+                              color: model.operation.value == 'stop'
+                                  ? null
+                                  : Colors.orange,
+                            ),
+                          )),
+                      title: Text('deviceInfo'.tr),
                     ),
                   ),
-                  SizedBox(height: 25, child: VerticalDivider()),
+                  const SizedBox(height: 35, child: VerticalDivider()),
                   Expanded(
                     child: ListTile(
-                      leading: Icon(Icons.timelapse),
-                      title: Text('00:12'),
+                      leading: const Icon(Icons.timelapse),
+                      title: Obx(() => Text(
+                          '${(Duration(seconds: model.countTimer.value))}'
+                              .substring(0, 4)
+                              .padLeft(5, '0'))),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -57,42 +69,96 @@ class EnvironCardWeb extends StatelessWidget {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.waves),
-                          SizedBox(height: 2),
-                          Text('Gia nhiệt')
+                          Obx(() => Icon(
+                                Icons.waves,
+                                color: model.heater.value == 1
+                                    ? Colors.orange
+                                    : null,
+                              )),
+                          const SizedBox(height: 2),
+                          Obx(() => Text(
+                                'heater'.tr,
+                                style: TextStyle(
+                                  color: model.heater.value == 1
+                                      ? Colors.orange
+                                      : null,
+                                ),
+                              ))
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(
+                        height: 20,
+                        width: 30,
+                        child: Divider(),
+                      ),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.ac_unit),
-                          SizedBox(height: 2),
-                          Text('Làm lạnh')
+                          Obx(() => Icon(
+                                Icons.ac_unit,
+                                color: model.cooler.value == 1
+                                    ? Colors.orange
+                                    : null,
+                              )),
+                          const SizedBox(height: 2),
+                          Obx(() => Text(
+                                'cooler'.tr,
+                                style: TextStyle(
+                                  color: model.cooler.value == 1
+                                      ? Colors.orange
+                                      : null,
+                                ),
+                              ))
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(
+                        height: 20,
+                        width: 30,
+                        child: Divider(),
+                      ),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
-                            Icons.invert_colors_off,
-                            color: Colors.orange,
-                          ),
-                          SizedBox(height: 2),
-                          Text(
-                            'Tách ẩm',
-                            style: TextStyle(color: Colors.orange),
-                          )
+                          Obx(() => Icon(
+                                Icons.invert_colors_off,
+                                color: model.humidity.value == 1
+                                    ? Colors.orange
+                                    : null,
+                              )),
+                          const SizedBox(height: 2),
+                          Obx(() => Text(
+                                'humiditier'.tr,
+                                style: TextStyle(
+                                  color: model.humidity.value == 1
+                                      ? Colors.orange
+                                      : null,
+                                ),
+                              ))
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(
+                        height: 20,
+                        width: 30,
+                        child: Divider(),
+                      ),
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.invert_colors),
-                          SizedBox(height: 2),
-                          Text('Tạo ẩm')
+                          Obx(() => Icon(
+                                Icons.invert_colors,
+                                color: model.moise.value == 1
+                                    ? Colors.orange
+                                    : null,
+                              )),
+                          const SizedBox(height: 2),
+                          Obx(() => Text(
+                                'moiser'.tr,
+                                style: TextStyle(
+                                  color: model.moise.value == 1
+                                      ? Colors.orange
+                                      : null,
+                                ),
+                              ))
                         ],
                       )
                     ],
@@ -107,17 +173,24 @@ class EnvironCardWeb extends StatelessWidget {
                           height: 100,
                           child: Center(
                             child: ListTile(
-                              leading: SizedBox(
+                              leading: const SizedBox(
                                 height: double.infinity,
                                 child: Icon(Icons.thermostat),
                               ),
-                              title: Text('Nhiệt độ'),
-                              subtitle: Text('Cài đặt: 50 °C'),
-                              trailing: Text(
-                                '50.7 °C',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                              title: Text('Temperature'.tr),
+                              subtitle: Obx(
+                                () => model.tempSet.value == 0
+                                    ? Text("${'settings'.tr}: ----")
+                                    : Text(
+                                        "${'settings'.tr}: ${model.tempSet} °C"),
+                              ),
+                              trailing: Obx(
+                                () => Text(
+                                  '${model.tempNow} °C',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -132,17 +205,24 @@ class EnvironCardWeb extends StatelessWidget {
                           height: 100,
                           child: Center(
                             child: ListTile(
-                              leading: SizedBox(
+                              leading: const SizedBox(
                                 height: double.infinity,
                                 child: Icon(Icons.water_drop),
                               ),
-                              title: Text('Độ ẩm'),
-                              subtitle: Text('Cài đặt: 50 %'),
-                              trailing: Text(
-                                '57 %',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                              title: Text('Humidity'.tr),
+                              subtitle: Obx(
+                                () => model.tempSet.value == 0
+                                    ? Text("${'settings'.tr}: ----")
+                                    : Text(
+                                        "${'settings'.tr}: ${model.humSet} %"),
+                              ),
+                              trailing: Obx(
+                                () => Text(
+                                  '${model.humNow} %',
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),

@@ -93,6 +93,9 @@ const Map<String, String> en_US = {
   "alarmTooltip": "Warning value",
   "errorTooltip": "Faulty sensor/device",
   "statisticsOfTheDay": "Statistics of the day",
+  "disable": "Disable",
+  " FTP": "FTP connection",
+  "succeeded": "Succeeded",
 
   // For detail device page
   "chart": "Chart",
@@ -124,6 +127,8 @@ const Map<String, String> en_US = {
   "emptyTextField": "Can't be left blank",
   "createDeviceErr": "Device already exists",
   "reloadForUpdate": "Reload the page for updates",
+  "selectDateToDown": "Select time to download:",
+  "chartByDate": "Chart by date:",
 
   // Alarm sensor
   "notification": "Notification of",
@@ -205,4 +210,14 @@ const Map<String, String> en_US = {
   "Fr": "Fr",
   "Sa": "Sa",
   "Su": "Su",
+
+  // Enviromental Card
+  "stop": "Stop",
+  "running": "Runing",
+  "heater": "Heater",
+  "cooler": "Cooler",
+  "humiditier": "Humiditier",
+  "moiser": "Moiser",
+  "temp_now": "Real temperature",
+  "hum_now": "Real humidity",
 };

@@ -35,8 +35,6 @@ class AuthController extends GetxController {
         data: {'Email': email, 'Password': pwd},
       );
 
-      print(response.data);
-
       if (response.data == "") {
         error = 2;
       } else {

@@ -127,11 +127,13 @@ class _HistoryWidgetState extends State<HistoryWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-          child: Row(
-            children: [
-              if (GetPlatform.isWeb)
+        if (GetPlatform.isWeb)
+          Padding(
+            padding: const EdgeInsets.all(5),
+            child: Row(
+              children: [
+                Text("selectDateToDown".tr),
+                const Spacer(),
                 OutlinedButton.icon(
                   icon: const Icon(Icons.download),
                   label: Text('download'.tr),
@@ -148,103 +150,125 @@ class _HistoryWidgetState extends State<HistoryWidget> {
                     );
                   },
                 ),
-              const Spacer(),
-              OutlinedButton.icon(
-                icon: const Icon(Icons.date_range),
-                label: Text(setDate),
-                onPressed: () async {
-                  final isLoad = await _selectDate();
-                  if (isLoad) {
+              ],
+            ),
+          ),
+        Container(
+          decoration: BoxDecoration(color: Colors.grey.shade100),
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                child: Row(
+                  children: [
+                    Text("chartByDate".tr),
+                    const Spacer(),
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.date_range),
+                      label: Text(setDate),
+                      onPressed: () async {
+                        final isLoad = await _selectDate();
+                        if (isLoad) {
+                          setState(() {
+                            isBusy = true;
+                            avg = min = max = 'n/a';
+                          });
+                          getDataByDate();
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              isBusy
+                  ? SizedBox(
+                      height: 250,
+                      child: Center(
+                        child: LoadingAnimationWidget.hexagonDots(
+                          color: Colors.green,
+                          size: 50,
+                        ),
+                      ),
+                    )
+                  : SizedBox(
+                      height: 250,
+                      child: valueList.length < 10
+                          ? const Center(child: Text("N/A"))
+                          : LineChartWidget(
+                              dateList: dateList,
+                              valueList: valueList,
+                            ),
+                    ),
+              const SizedBox(height: 10),
+              ListTile(
+                title: Text("avgOfDay".tr),
+                leading: const Icon(Icons.trending_flat),
+                trailing: Text(
+                  avg,
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const Divider(height: 2),
+              ListTile(
+                title: Text("lowestOfDay".tr),
+                leading: const Icon(Icons.trending_down),
+                trailing: Text(
+                  min,
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const Divider(height: 2),
+              ListTile(
+                title: Text("highestOfDay".tr),
+                leading: const Icon(Icons.trending_up),
+                trailing: Text(
+                  max,
+                  style: const TextStyle(
+                      fontSize: 15, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: GroupButton(
+                  controller: groupButtonController,
+                  isRadio: true,
+                  onSelected: (str, index, isSelected) {
                     setState(() {
                       isBusy = true;
                       avg = min = max = 'n/a';
                     });
                     getDataByDate();
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-        isBusy
-            ? SizedBox(
-                height: 250,
-                child: Center(
-                  child: LoadingAnimationWidget.hexagonDots(
-                    color: Colors.green,
-                    size: 50,
+                  },
+                  buttons:
+                      widget.sensors.map((s) => s.name.toString().tr).toList(),
+                  options: GroupButtonOptions(
+                    runSpacing: 5,
+                    textPadding: const EdgeInsets.all(8),
+                    unselectedBorderColor: Colors.grey,
+                    unselectedColor: Colors.transparent,
+                    selectedBorderColor: Colors.transparent,
+                    unselectedShadow: [],
+                    selectedShadow: [],
+                    selectedTextStyle:
+                        const TextStyle(fontWeight: FontWeight.normal),
+                    unselectedTextStyle: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                    ),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                 ),
-              )
-            : SizedBox(
-                height: 250,
-                child: valueList.length < 10
-                    ? const Center(child: Text("N/A"))
-                    : LineChartWidget(
-                        dateList: dateList,
-                        valueList: valueList,
-                      ),
               ),
-        const SizedBox(height: 10),
-        ListTile(
-          title: Text("avgOfDay".tr),
-          leading: const Icon(Icons.trending_flat),
-          trailing: Text(
-            avg,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-        ),
-        const Divider(height: 2),
-        ListTile(
-          title: Text("lowestOfDay".tr),
-          leading: const Icon(Icons.trending_down),
-          trailing: Text(
-            min,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-        ),
-        const Divider(height: 2),
-        ListTile(
-          title: Text("highestOfDay".tr),
-          leading: const Icon(Icons.trending_up),
-          trailing: Text(
-            max,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-            color: Colors.grey.shade100,
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: GroupButton(
-            controller: groupButtonController,
-            isRadio: true,
-            onSelected: (str, index, isSelected) {
-              setState(() {
-                isBusy = true;
-                avg = min = max = 'n/a';
-              });
-              getDataByDate();
-            },
-            buttons: widget.sensors.map((s) => s.name).toList(),
-            options: GroupButtonOptions(
-              runSpacing: 5,
-              textPadding: const EdgeInsets.all(8),
-              unselectedBorderColor: Colors.grey,
-              unselectedColor: Colors.transparent,
-              selectedBorderColor: Colors.transparent,
-              unselectedShadow: [],
-              selectedShadow: [],
-              selectedTextStyle: const TextStyle(fontWeight: FontWeight.normal),
-              unselectedTextStyle: const TextStyle(
-                fontWeight: FontWeight.normal,
-                color: Colors.black,
-              ),
-              borderRadius: BorderRadius.circular(4),
-            ),
+            ],
           ),
         ),
       ],

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:phuonghai/app/data/models/enviro_chamber.dart';
 import 'package:phuonghai/app/data/models/group.dart';
 import 'package:phuonghai/app/data/models/iaq.dart';
 import 'package:phuonghai/app/data/models/refrigerator.dart';
@@ -51,6 +52,8 @@ class ApiClient {
           );
           d.sensor.temp.id = ref['Id'];
           d.sensor.temp.setAlarm(ref['MinValue'], ref['MaxValue']);
+        } else if (element['Type'] == 'Environmental Chamber') {
+          d = EnviroChamberModel.fromJson(element);
         } else {
           d = DeviceModel.fromJson(element);
           d.sensorsRef.addAll(element['Sensors']);
@@ -188,6 +191,7 @@ class ApiClient {
               ? e
               : min,
         );
+
         response.data.removeWhere(
             (item) => item['ReceivedDate'] != lastest['ReceivedDate']);
 
@@ -260,6 +264,61 @@ class ApiClient {
                       : Colors.redAccent,
                 ),
               );
+            }
+          }
+        } else if (device.type == "Environmental Chamber") {
+          // Tu moi truong
+          for (var i in response.data) {
+            switch (i['SensorType']) {
+              case 'operation':
+                device.operation.value = i['Status'];
+                device.countTimer.value = i['Value'];
+                break;
+              case 'mode':
+                device.mode.value = i['Status'];
+                break;
+              case 'heater':
+                device.heater.value = i['Value'].toInt();
+                break;
+              case 'cooler':
+                device.cooler.value = i['Value'].toInt();
+                break;
+              case 'humidity':
+                device.humidity.value = i['Value'].toInt();
+                break;
+              case 'moise':
+                device.moise.value = i['Value'].toInt();
+                break;
+              case 'temp_now':
+                device.tempNow.value = i['Value'];
+                if (isFirst) {
+                  final sensor = SensorModel.fromJson(device.key, i);
+                  sensor.val.value = i['Value'].toDouble();
+                  sensor.status.value = i['Status'];
+                  sensor.setAlarm(i['MinValue'], i['MaxValue']);
+                  checkAlarm(sensor);
+                  device.sensors.add(sensor);
+                }
+                break;
+              case 'temp_set':
+                device.tempSet.value = i['Value'];
+                break;
+              case 'hum_now':
+                device.humNow.value = i['Value'];
+                if (isFirst) {
+                  final sensor = SensorModel.fromJson(device.key, i);
+                  sensor.val.value = i['Value'].toDouble();
+                  sensor.status.value = i['Status'];
+                  sensor.setAlarm(i['MinValue'], i['MaxValue']);
+                  checkAlarm(sensor);
+                  device.sensors.add(sensor);
+                }
+                break;
+              case 'hum_set':
+                device.humSet.value = i['Value'];
+                break;
+              default:
+                break;
             }
           }
         } else {

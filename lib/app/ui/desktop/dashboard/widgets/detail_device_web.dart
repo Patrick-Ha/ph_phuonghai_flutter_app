@@ -8,8 +8,6 @@ import 'package:phuonghai/app/ui/common/widgets/iaq_card.dart';
 import 'package:phuonghai/app/ui/common/widgets/refri_item_widget.dart';
 import 'package:phuonghai/app/ui/mobile/device/device_info.dart';
 
-import 'environ_card_web.dart';
-
 class DetailDeviceWeb extends GetWidget<HomeController> {
   const DetailDeviceWeb({Key? key}) : super(key: key);
 
@@ -19,7 +17,7 @@ class DetailDeviceWeb extends GetWidget<HomeController> {
       elevation: 1,
       color: Colors.white,
       child: Container(
-        width: 450,
+        width: 460,
         decoration: const BoxDecoration(
           color: Colors.transparent,
           border: Border(
@@ -90,24 +88,33 @@ class DetailDeviceWeb extends GetWidget<HomeController> {
                     )
                   else if (controller.detailDevice[0].type == 'Air Node')
                     IaqWidget(model: controller.detailDevice[0])
-                  else
-                    Container(
-                      padding: const EdgeInsets.only(
-                        left: 8,
-                        top: 5,
-                        right: 8,
-                        bottom: 20,
-                      ),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (co, i) => SmartpHSensor(
+                  else if (controller.detailDevice[0].type ==
+                      'Environmental Chamber')
+                    StatusEnvironList(model: controller.detailDevice[0]),
+                  Container(
+                    padding: const EdgeInsets.only(
+                      left: 8,
+                      top: 5,
+                      right: 8,
+                      bottom: 20,
+                    ),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (co, i) {
+                        if (controller.detailDevice[0].sensors[i].name ==
+                            ' FTP') {
+                          return FTPConnection(
+                              sensor: controller.detailDevice[0].sensors[i]);
+                        }
+                        return SmartpHSensor(
                           sensor: controller.detailDevice[0].sensors[i],
                           isSetting: true,
-                        ),
-                        itemCount: controller.detailDevice[0].sensors.length,
-                      ),
+                        );
+                      },
+                      itemCount: controller.detailDevice[0].sensors.length,
                     ),
+                  ),
                   DividerWithText(text: 'dataHistory'.tr),
                   if (controller.detailDevice[0].type == 'Refrigerator')
                     HistoryWidget(sensors: [
@@ -115,7 +122,10 @@ class DetailDeviceWeb extends GetWidget<HomeController> {
                       controller.detailDevice[0].sensor.pin,
                     ])
                   else
-                    HistoryWidget(sensors: controller.detailDevice[0].sensors),
+                    HistoryWidget(
+                        sensors: controller.detailDevice[0].sensors
+                            .skipWhile((value) => value.name == ' FTP')
+                            .toList()),
                   const SizedBox(height: 15),
                   DeviceInfo(model: controller.detailDevice[0]),
                 ],
@@ -123,6 +133,128 @@ class DetailDeviceWeb extends GetWidget<HomeController> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class StatusEnvironList extends StatelessWidget {
+  const StatusEnvironList({
+    Key? key,
+    this.model,
+  }) : super(key: key);
+
+  final dynamic model;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 5, bottom: 10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: ListTile(
+                  leading: const SizedBox(
+                      height: double.infinity,
+                      child: Icon(Icons.monitor_heart)),
+                  subtitle: Obx(() => Text(
+                        model.operation.value.toString().tr,
+                        style: TextStyle(
+                          color: model.operation.value == 'stop'
+                              ? null
+                              : Colors.orange,
+                        ),
+                      )),
+                  title: Text('deviceInfo'.tr),
+                ),
+              ),
+              const SizedBox(height: 35, child: VerticalDivider()),
+              Expanded(
+                child: ListTile(
+                  leading: const Icon(Icons.timelapse),
+                  title: Obx(() => Text(
+                      '${(Duration(seconds: model.countTimer.value))}'
+                          .substring(0, 4)
+                          .padLeft(5, '0'))),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Obx(() => Icon(
+                        Icons.waves,
+                        color: model.heater.value == 1 ? Colors.orange : null,
+                      )),
+                  const SizedBox(height: 2),
+                  Obx(() => Text(
+                        'heater'.tr,
+                        style: TextStyle(
+                          color: model.heater.value == 1 ? Colors.orange : null,
+                        ),
+                      ))
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Obx(() => Icon(
+                        Icons.ac_unit,
+                        color: model.cooler.value == 1 ? Colors.orange : null,
+                      )),
+                  const SizedBox(height: 2),
+                  Obx(() => Text(
+                        'cooler'.tr,
+                        style: TextStyle(
+                          color: model.cooler.value == 1 ? Colors.orange : null,
+                        ),
+                      ))
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Obx(() => Icon(
+                        Icons.invert_colors_off,
+                        color: model.humidity.value == 1 ? Colors.orange : null,
+                      )),
+                  const SizedBox(height: 2),
+                  Obx(() => Text(
+                        'humiditier'.tr,
+                        style: TextStyle(
+                          color:
+                              model.humidity.value == 1 ? Colors.orange : null,
+                        ),
+                      ))
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Obx(() => Icon(
+                        Icons.invert_colors,
+                        color: model.moise.value == 1 ? Colors.orange : null,
+                      )),
+                  const SizedBox(height: 2),
+                  Obx(() => Text(
+                        'moiser'.tr,
+                        style: TextStyle(
+                          color: model.moise.value == 1 ? Colors.orange : null,
+                        ),
+                      ))
+                ],
+              )
+            ],
+          ),
+        ],
       ),
     );
   }

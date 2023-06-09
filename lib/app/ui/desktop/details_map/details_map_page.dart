@@ -1,4 +1,3 @@
-import 'package:battery_indicator/battery_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
@@ -231,11 +230,11 @@ class _HistoryRefriItemState extends State<HistoryRefriItem> {
                   color: Colors.orangeAccent,
                 )
               : const SizedBox(width: 5),
-          BatteryIndicator(
-            batteryFromPhone: false,
-            batteryLevel: widget.item.pin.val.value.toInt(),
-            style: BatteryIndicatorStyle.skeumorphism,
-          ),
+          // BatteryIndicator(
+          //   batteryFromPhone: false,
+          //   batteryLevel: widget.item.pin.val.value.toInt(),
+          //   style: BatteryIndicatorStyle.skeumorphism,
+          // ),
           const VerticalDivider(
             color: Colors.black38,
             width: 26,

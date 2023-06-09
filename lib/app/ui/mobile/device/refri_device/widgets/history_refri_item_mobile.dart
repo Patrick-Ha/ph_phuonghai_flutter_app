@@ -1,4 +1,3 @@
-import 'package:battery_indicator/battery_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phuonghai/app/data/models/refrigerator.dart';
@@ -92,11 +91,11 @@ class _HistoryRefriItemMobileState extends State<HistoryRefriItemMobile> {
                   color: Colors.orangeAccent,
                 )
               : const SizedBox(width: 5),
-          BatteryIndicator(
-            batteryFromPhone: false,
-            batteryLevel: widget.item.pin.val.value.toInt(),
-            style: BatteryIndicatorStyle.skeumorphism,
-          ),
+          // BatteryIndicator(
+          //   batteryFromPhone: false,
+          //   batteryLevel: widget.item.pin.val.value.toInt(),
+          //   style: BatteryIndicatorStyle.skeumorphism,
+          // ),
           const VerticalDivider(
             color: Colors.black38,
             width: 26,

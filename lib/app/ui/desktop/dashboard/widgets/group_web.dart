@@ -253,16 +253,15 @@ class _GroupWebTState extends State<GroupWebT> {
                               model: widget.group.devices[index],
                             ),
                           );
-                          // }
-                          // else if (widget.group.devices[index].type ==
-                          //     'Refrigerator') {
-                          //   return Container(
-                          //     constraints: const BoxConstraints(maxWidth: 400),
-                          //     margin: const EdgeInsets.only(right: 8),
-                          //     child: EnvironCardWeb(
-                          //       model: widget.group.devices[index],
-                          //     ),
-                          //   );
+                        } else if (widget.group.devices[index].type ==
+                            'Environmental Chamber') {
+                          return Container(
+                            constraints: const BoxConstraints(maxWidth: 400),
+                            margin: const EdgeInsets.only(right: 8),
+                            child: EnvironCardWeb(
+                              model: widget.group.devices[index],
+                            ),
+                          );
                         } else {
                           return Container(
                             constraints: const BoxConstraints(maxWidth: 360),

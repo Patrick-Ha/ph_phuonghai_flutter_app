@@ -101,14 +101,14 @@ class _MapCardWebState extends State<MapCardWeb> {
             userAgentPackageName: 'com.phuonghai',
           ),
           Obx(() {
-            Future.delayed(const Duration(milliseconds: 10), () {
-              if (widget.model.updateCamera == 1) {
-                mapController.move(widget.model.markers.first.point, 16);
-              } else if (widget.model.updateCamera == 2) {
-                mapController.move(widget.model.markers.last.point, 16);
-                widget.model.updateCamera = 0;
-              }
-            });
+            // Future.delayed(const Duration(milliseconds: 50), () {
+            //   if (widget.model.updateCamera == 1) {
+            //     mapController.move(widget.model.markers.first.point, 16);
+            //   } else if (widget.model.updateCamera == 2) {
+            //     mapController.move(widget.model.markers.last.point, 16);
+            //     widget.model.updateCamera = 0;
+            //   }
+            // });
 
             return PopupMarkerLayerWidget(
               options: PopupMarkerLayerOptions(

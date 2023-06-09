@@ -98,7 +98,7 @@ class HomeController extends GetxController {
       EasyLoading.dismiss();
 
       timer = Timer.periodic(
-        const Duration(seconds: 60),
+        const Duration(seconds: 45),
         (_) => updateSensorData(false),
       );
     }
