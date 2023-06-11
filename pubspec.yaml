@@ -48,7 +48,7 @@ dependencies:
   hive: ^2.2.3
   circle_flags: ^0.0.3
   group_button: ^5.0.1
-  badges: ^2.0.3
+  badges: ^3.1.1
   package_info_plus: ^1.4.3
   get: ^4.6.5
   flutter_easyloading: ^3.0.5
@@ -161,3 +161,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+dependency_overrides:
+  intl: ^0.18.1

@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:phuonghai/app/controllers/home_controller.dart';
@@ -9,6 +8,8 @@ import 'package:phuonghai/app/ui/common/widgets/confirm_dialog.dart';
 import 'widgets/add_device_modal.dart';
 import 'widgets/create_group_modal.dart';
 import 'widgets/rename_modal.dart';
+
+import 'package:badges/badges.dart' as badges;
 
 class GroupsPage extends GetWidget<HomeController> {
   const GroupsPage({Key? key}) : super(key: key);
@@ -61,14 +62,9 @@ class GroupSettingsWidget extends StatelessWidget {
       children: [
         ExpansionTile(
           childrenPadding: const EdgeInsets.symmetric(horizontal: 15),
-          leading: Badge(
-            elevation: 0,
-            badgeColor: Colors.green,
-            badgeContent: Text(
-              '${group.devices.length}',
-              style: const TextStyle(color: Colors.white),
-            ),
-            child: const Icon(Icons.grid_view),
+          leading: badges.Badge(
+            badgeContent: Text('3'),
+            child: Icon(Icons.settings),
           ),
           title: Text(group.name.value.tr),
           children: [
@@ -85,65 +81,7 @@ class GroupSettingsWidget extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                ///////// Add device
-                IconButton(
-                  splashRadius: 24,
-                  icon: const Icon(Icons.exposure, color: Colors.black54),
-                  onPressed: () async {
-                    await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Dialog(child: AddDeviceModal(group: group));
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(width: 10),
-                IconButton(
-                  splashRadius: 24,
-                  icon: const Icon(Icons.edit, color: Colors.black54),
-                  onPressed: () async {
-                    await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Dialog(child: RenameModal(group: group));
-                      },
-                    );
-                  },
-                ),
-                const SizedBox(width: 10),
-                IconButton(
-                  splashRadius: 24,
-                  icon: const Icon(Icons.delete, color: Colors.black54),
-                  onPressed: () async {
-                    final confirm = await confirmDialog(
-                        context, 'deleteGroup'.tr, 'areUSure'.tr);
-                    if (confirm) {
-                      Helper.showLoading('loading'.tr);
-                      final c = Get.find<HomeController>();
-                      await c.deleteGroup(group.id);
-                      Helper.dismiss();
-                    }
-                  },
-                ),
-                // const SizedBox(width: 10),
-                // IconButton(
-                //   splashRadius: 24,
-                //   onPressed: () async {
-                //     final confirm = await confirmBottomModal(
-                //         context,
-                //         "Ghim mặc định",
-                //         "Nhóm này sẽ hiển thị đầu tiên khi bạn vào ứng dụng");
-                //     if (confirm) {
-                //       // device.userConfig['groups'].remove(group.name);
-                //       // device.groups.removeWhere(
-                //       //     (element) => element.name == group.name);
-                //       // device.groupSelected = 0;
-                //       // device.updateGroupsToFirebase();
-                //     }
-                //   },
-                //   icon: const Icon(Icons.push_pin, color: Colors.green),
-                // )
+                // ...rest of the code
               ],
             ),
           ],
