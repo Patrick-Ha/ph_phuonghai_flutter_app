@@ -15,6 +15,7 @@ class Refrigerator extends Device {
     required String model,
     required String friendlyName,
     required String description,
+     required String camUrl1,
   }) : super(
           id: id,
           key: key,
@@ -22,6 +23,7 @@ class Refrigerator extends Device {
           model: model,
           friendlyName: friendlyName,
           description: description,
+            camUrl1: camUrl1,
         );
 
   factory Refrigerator.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class Refrigerator extends Device {
       model: json['Model'],
       description: json["Description"],
       friendlyName: json["FriendlyName"],
+        camUrl1: json["camUrl1"],
     );
   }
 }

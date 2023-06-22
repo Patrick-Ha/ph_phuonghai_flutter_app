@@ -24,7 +24,7 @@ class _SplashPageState extends State<SplashPage> {
         final c = Get.find<AuthController>();
         bool update = false;
         if (GetPlatform.isAndroid || GetPlatform.isIOS) {
-          update = await checkNewVersion();
+          //update = await checkNewVersion();
         }
         if (!update) {
           if (c.isLogged) {

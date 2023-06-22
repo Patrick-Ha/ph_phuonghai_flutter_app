@@ -8,6 +8,12 @@ import 'package:phuonghai/app/ui/common/widgets/iaq_card.dart';
 import 'package:phuonghai/app/ui/common/widgets/refri_item_widget.dart';
 import 'package:phuonghai/app/ui/mobile/device/device_info.dart';
 
+import 'package:flutter_vlc_player/flutter_vlc_player.dart';
+import 'package:flutter_vlc_player/src/vlc_player_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+
+
 class DetailDeviceWeb extends GetWidget<HomeController> {
   const DetailDeviceWeb({Key? key}) : super(key: key);
 
@@ -115,7 +121,24 @@ class DetailDeviceWeb extends GetWidget<HomeController> {
                       itemCount: controller.detailDevice[0].sensors.length,
                     ),
                   ),
+                  DividerWithText(text: "Security Camera"),
+
+                //  //As web browser does not support vlc so provide a clickable link
+                GestureDetector(
+                onTap: () async {
+                    //const url = "rtsp://admin:1234abcd@222.252.98.34:554/Streaming/Channels/101";
+                    var url = controller.detailDevice[0].camUrl1;
+                    final Uri _url = Uri.parse(url);
+                    await launchUrl(_url);
+                },
+                child: Image.asset('images/camera.png'),
+                ),
+                    
+                //ExampleVideo(camUrl1: "rtsp://admin:1234abcd@14.241.170.107:554/Streaming/Channels/101"),
+                //TestWidget(title:"rtsp://admin:1234abcd@14.241.170.107:554/Streaming/Channels/101"),
+                  
                   DividerWithText(text: 'dataHistory'.tr),
+
                   if (controller.detailDevice[0].type == 'Refrigerator')
                     HistoryWidget(sensors: [
                       controller.detailDevice[0].sensor.temp,
@@ -257,5 +280,61 @@ class StatusEnvironList extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+
+class TestWidget extends StatelessWidget {
+  const TestWidget({Key? key, required this.title}) : super(key: key);
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return Text(title);
+  }
+}
+
+
+//cameraa 
+// String url =  'rtsp://admin:1234abcd@14.241.170.107:554/Streaming/Channels/101';
+
+class ExampleVideo extends StatefulWidget {
+  const ExampleVideo({Key? key, required this.camUrl1}) : super(key: key);
+  final String camUrl1;
+
+  @override
+  _ExampleVideoState createState() => _ExampleVideoState(camUrl1);
+}
+
+class _ExampleVideoState extends State<ExampleVideo> {
+
+   String _camUrl1 = "";
+
+  _ExampleVideoState(String camUrl1) {
+    this._camUrl1 = camUrl1;
+  }
+
+  //  VlcPlayerController _vlcViewController = new VlcPlayerController.network(
+  //  "",
+  //   autoPlay: true,
+  // );
+
+
+  @override
+  Widget build(BuildContext context) {
+   
+    return Column(
+     
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            new VlcPlayer(
+              controller: new VlcPlayerController.network(
+                this._camUrl1,
+                autoPlay: true,
+              ),
+              aspectRatio: 16 / 9,
+              placeholder: Text("Hello World"),
+            ),
+          ],
+      );
   }
 }

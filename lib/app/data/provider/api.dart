@@ -15,6 +15,8 @@ import 'package:latlong2/latlong.dart';
 
 import '../models/device.dart';
 
+//const baseUrl = 'http://192.168.1.3:3000';
+//const baseUrl = 'http://172.20.10.3:3000';
 const baseUrl = 'http://thegreenlab.xyz:3000';
 
 class ApiClient {

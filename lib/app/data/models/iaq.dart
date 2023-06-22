@@ -28,6 +28,7 @@ class IaqModel extends Device {
     required String model,
     required String friendlyName,
     required String description,
+     required String camUrl1,
     this.iaqStatus = "Good",
   }) : super(
           id: id,
@@ -36,6 +37,7 @@ class IaqModel extends Device {
           model: model,
           friendlyName: friendlyName,
           description: description,
+          camUrl1: camUrl1,
         );
 
   factory IaqModel.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class IaqModel extends Device {
       model: json['Model'],
       description: json["Description"],
       friendlyName: json["FriendlyName"],
+        camUrl1: json["camUrl1"],
     );
   }
 }
