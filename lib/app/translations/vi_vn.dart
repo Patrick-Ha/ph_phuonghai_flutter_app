@@ -49,7 +49,7 @@ const Map<String, String> vi_VN = {
   "pwdTooShort": "Mật khẩu tối thiểu 6 ký tự",
   "signUpError": "Tài khoản đã tồn tại",
   "accountNotFound": "Tài khoản không tồn tại",
-  "isValidEmail": "Định dạng email không hợp lệ",
+  "isValidEmail": "Định dạng không hợp lệ",
   "pwdIncorrect": "Mật khẩu không khớp",
   "signUpDone": "Đăng ký tài khoản thành công",
   "forgotPwdDone": "Hãy kiểm tra Email của bạn",
@@ -220,4 +220,7 @@ const Map<String, String> vi_VN = {
   "moiser": "Tạo ẩm",
   "temp_now": "Nhiệt độ thực tế",
   "hum_now": "Độ ẩm thực tế",
+  "set": "Cài đặt",
+
+  "deleteCamera": "Xóa Camera"
 };

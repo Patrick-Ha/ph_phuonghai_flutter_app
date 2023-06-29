@@ -72,7 +72,7 @@ class _RenameModalState extends State<RenameModal> {
                           widget.group.name.value = _controller.text;
 
                           Helper.dismiss();
-                          Navigator.of(context).pop();
+                          if (context.mounted) Navigator.of(context).pop();
                         }
                       },
                     ),

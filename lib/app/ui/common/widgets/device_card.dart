@@ -73,7 +73,7 @@ class DeviceCard extends StatelessWidget {
                         color: Colors.amber,
                       ),
                       Text(
-                        "lostConnection".tr + ": " + model.getSyncDateObs,
+                        "${"lostConnection".tr}: ${model.getSyncDateObs}",
                         style: const TextStyle(color: Colors.red),
                       )
                     ],
@@ -127,11 +127,11 @@ class SmartpHSensor extends StatelessWidget {
                     ? true
                     : false,
                 glowColor: sensor.color.value,
+                endRadius: 24,
                 child: Icon(
                   sensor.icon,
                   color: sensor.color.value,
                 ),
-                endRadius: 24,
               ),
             ),
           ),
@@ -261,7 +261,7 @@ class _AlarmModalState extends State<AlarmModal> {
       child: Column(
         children: [
           ListTile(
-            title: Text("notification".tr + " [${widget.sensor.name}]"),
+            title: Text("${"notification".tr} [${widget.sensor.name}]"),
             leading: Checkbox(
               value: alarmActive,
               onChanged: (newValue) {

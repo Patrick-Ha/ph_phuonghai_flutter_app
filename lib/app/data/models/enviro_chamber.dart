@@ -25,6 +25,9 @@ class EnviroChamberModel extends Device {
     required String model,
     required String friendlyName,
     required String description,
+    required String camUrl1,
+    required String camUrl2,
+    required String camUrl3,
   }) : super(
           id: id,
           key: key,
@@ -32,6 +35,9 @@ class EnviroChamberModel extends Device {
           model: model,
           friendlyName: friendlyName,
           description: description,
+          camUrl1: camUrl1,
+          camUrl2: camUrl2,
+          camUrl3: camUrl3,
         );
 
   factory EnviroChamberModel.fromJson(Map<String, dynamic> json) {
@@ -40,6 +46,9 @@ class EnviroChamberModel extends Device {
       key: json['SerialNumber'],
       type: json['Type'],
       model: json['Model'],
+      camUrl1: json["camUrl1"] ?? "",
+      camUrl2: json["camUrl2"] ?? "",
+      camUrl3: json["camUrl3"] ?? "",
       description: json["Description"],
       friendlyName: json["FriendlyName"],
     );

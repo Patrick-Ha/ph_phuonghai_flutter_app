@@ -6,7 +6,7 @@ import 'package:phuonghai/app/helper/helper.dart';
 import 'package:phuonghai/app/ui/common/widgets/confirm_dialog.dart';
 import 'package:phuonghai/app/ui/common/widgets/device_card.dart';
 import 'package:phuonghai/app/ui/common/widgets/iaq_card.dart';
-import 'package:phuonghai/app/ui/desktop/dashboard/widgets/environ_card_web.dart';
+import 'package:phuonghai/app/ui/common/widgets/environ_card.dart';
 import 'package:phuonghai/app/ui/desktop/dashboard/widgets/refrigerator_card_web.dart';
 import 'package:phuonghai/app/ui/common/widgets/templog_card.dart';
 import 'package:phuonghai/app/ui/mobile/groups/widgets/add_device_modal.dart';
@@ -258,7 +258,7 @@ class _GroupWebTState extends State<GroupWebT> {
                           return Container(
                             constraints: const BoxConstraints(maxWidth: 400),
                             margin: const EdgeInsets.only(right: 8),
-                            child: EnvironCardWeb(
+                            child: EnvironCard(
                               model: widget.group.devices[index],
                             ),
                           );

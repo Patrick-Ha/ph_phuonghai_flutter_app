@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:phuonghai/app/controllers/home_controller.dart';
 import 'package:phuonghai/app/ui/mobile/device/air_node/airnode_device_page.dart';
 import 'package:phuonghai/app/ui/mobile/device/device_page.dart';
+import 'package:phuonghai/app/ui/mobile/device/environ_chamber/environ_chamber_page.dart';
 import 'package:phuonghai/app/ui/mobile/device/refri_device/refri_device_page.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -26,6 +27,8 @@ class HeaderCard extends StatelessWidget {
               Get.to(() => AirNodeDevicePage(model: model));
             } else if (model.type == 'Refrigerator') {
               Get.to(() => RefiDevicePage(model: model));
+            } else if (model.type == 'Environmental Chamber') {
+              Get.to(() => EnvironChamberPage(model: model));
             } else {
               Get.to(() => SmartpHDevicePage(model: model));
             }

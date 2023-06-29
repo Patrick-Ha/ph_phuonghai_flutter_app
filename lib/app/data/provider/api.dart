@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter_excel/excel.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +9,6 @@ import 'package:phuonghai/app/data/models/group.dart';
 import 'package:phuonghai/app/data/models/iaq.dart';
 import 'package:phuonghai/app/data/models/refrigerator.dart';
 import 'package:phuonghai/app/data/models/user.dart';
-import 'package:latlong2/latlong.dart';
 
 import '../models/device.dart';
 
@@ -33,7 +30,7 @@ class ApiClient {
 
   // Fetch all device by User
   Future<List> fetchUserDevices() async {
-    final _devices = [];
+    final dList = [];
 
     try {
       final response = await dio.get('/Devices/ByUser');
@@ -59,17 +56,17 @@ class ApiClient {
           d.sensorsRef.addAll(element['Sensors']);
         }
         d.dateTimeSync = element['DateSync'];
-        _devices.add(d);
+        dList.add(d);
       }
     } catch (e) {
-      debugPrint("Device info: " + e.toString());
+      debugPrint("Device info: $e");
     }
 
-    return _devices;
+    return dList;
   }
 
   Future<List<GroupModel>> getAllGroupOfUser(List allDe) async {
-    final _groups = <GroupModel>[];
+    final gList = <GroupModel>[];
 
     try {
       final response = await dio.get("/UserDevicegroup");
@@ -85,14 +82,14 @@ class ApiClient {
         for (final g in response.data) {
           final group = GroupModel.fromJson(g);
           group.name.value = g['Name'];
-          _groups.add(group);
+          gList.add(group);
         }
       }
     } catch (e) {
       debugPrint("Get group error ${e.toString()}");
     }
 
-    return _groups;
+    return gList;
   }
 
   // Return list device
@@ -110,14 +107,14 @@ class ApiClient {
   //     }
   //   }
   Future<List> getDeviceOfGroup(int idGroup) async {
-    final _listReturn = [];
+    final list = [];
     try {
       final response = await dio.get("/UserDevicegroup/$idGroup");
       return response.data['Devices'];
     } catch (e) {
       debugPrint("[getDeviceOfGroup]: ${e.toString()}");
     }
-    return _listReturn;
+    return list;
   }
 
   Future<int> createGroup(String name, int order, String des) async {
@@ -222,48 +219,48 @@ class ApiClient {
           );
 
           if (device.markers.isEmpty) {
-            device.markers.add(
-              Marker(
-                key: Key(device.sensor.timeUpdated),
-                point: LatLng(device.sensor.lat, device.sensor.long),
-                width: 26,
-                height: 26,
-                builder: (_) => AvatarGlow(
-                  child: Icon(
-                    Icons.radio_button_checked,
-                    size: 20,
-                    color: device.sensor.gpsState.value == 'Good'
-                        ? Colors.blue
-                        : Colors.red,
-                  ),
-                  endRadius: 22,
-                  glowColor: device.sensor.gpsState.value == 'Good'
-                      ? Colors.blueAccent
-                      : Colors.redAccent,
-                ),
-              ),
-            );
+            // device.markers.add(
+            //   Marker(
+            //     key: Key(device.sensor.timeUpdated),
+            //     point: LatLng(device.sensor.lat, device.sensor.long),
+            //     width: 26,
+            //     height: 26,
+            //     builder: (_) => AvatarGlow(
+            //       child: Icon(
+            //         Icons.radio_button_checked,
+            //         size: 20,
+            //         color: device.sensor.gpsState.value == 'Good'
+            //             ? Colors.blue
+            //             : Colors.red,
+            //       ),
+            //       endRadius: 22,
+            //       glowColor: device.sensor.gpsState.value == 'Good'
+            //           ? Colors.blueAccent
+            //           : Colors.redAccent,
+            //     ),
+            //   ),
+            // );
           } else {
             if (device.markers.first.key != Key(device.sensor.timeUpdated)) {
-              device.markers.first = Marker(
-                key: Key(device.sensor.timeUpdated),
-                point: LatLng(device.sensor.lat, device.sensor.long),
-                width: 26,
-                height: 26,
-                builder: (_) => AvatarGlow(
-                  child: Icon(
-                    Icons.radio_button_checked,
-                    size: 20,
-                    color: device.sensor.gpsState.value == 'Good'
-                        ? Colors.blue
-                        : Colors.red,
-                  ),
-                  endRadius: 22,
-                  glowColor: device.sensor.gpsState.value == 'Good'
-                      ? Colors.blueAccent
-                      : Colors.redAccent,
-                ),
-              );
+              // device.markers.first = Marker(
+              //   key: Key(device.sensor.timeUpdated),
+              //   point: LatLng(device.sensor.lat, device.sensor.long),
+              //   width: 26,
+              //   height: 26,
+              //   builder: (_) => AvatarGlow(
+              //     child: Icon(
+              //       Icons.radio_button_checked,
+              //       size: 20,
+              //       color: device.sensor.gpsState.value == 'Good'
+              //           ? Colors.blue
+              //           : Colors.red,
+              //     ),
+              //     endRadius: 22,
+              //     glowColor: device.sensor.gpsState.value == 'Good'
+              //         ? Colors.blueAccent
+              //         : Colors.redAccent,
+              //   ),
+              // );
             }
           }
         } else if (device.type == "Environmental Chamber") {
@@ -272,7 +269,7 @@ class ApiClient {
             switch (i['SensorType']) {
               case 'operation':
                 device.operation.value = i['Status'];
-                device.countTimer.value = i['Value'];
+                device.countTimer.value = i['Value'].toInt();
                 break;
               case 'mode':
                 device.mode.value = i['Status'];
@@ -290,7 +287,7 @@ class ApiClient {
                 device.moise.value = i['Value'].toInt();
                 break;
               case 'temp_now':
-                device.tempNow.value = i['Value'];
+                device.tempNow.value = i['Value'].toDouble();
                 if (isFirst) {
                   final sensor = SensorModel.fromJson(device.key, i);
                   sensor.val.value = i['Value'].toDouble();
@@ -301,10 +298,10 @@ class ApiClient {
                 }
                 break;
               case 'temp_set':
-                device.tempSet.value = i['Value'];
+                device.tempSet.value = i['Value'].toDouble();
                 break;
               case 'hum_now':
-                device.humNow.value = i['Value'];
+                device.humNow.value = i['Value'].toDouble();
                 if (isFirst) {
                   final sensor = SensorModel.fromJson(device.key, i);
                   sensor.val.value = i['Value'].toDouble();
@@ -315,7 +312,7 @@ class ApiClient {
                 }
                 break;
               case 'hum_set':
-                device.humSet.value = i['Value'];
+                device.humSet.value = i['Value'].toDouble();
                 break;
               default:
                 break;
@@ -380,7 +377,7 @@ class ApiClient {
         }
       }
     } catch (e) {
-      debugPrint("getSensorOfDevice: " + e.toString());
+      debugPrint("getSensorOfDevice: $e");
     }
   }
 
@@ -421,7 +418,7 @@ class ApiClient {
   }
 
   Future<bool> deleteAccountByUser(String pwd) async {
-    final token = "Basic " + base64.encode(utf8.encode("${user.email}:$pwd"));
+    final token = "Basic ${base64.encode(utf8.encode("${user.email}:$pwd"))}";
     if (token == user.token) {
       try {
         await dio.delete(
@@ -435,7 +432,7 @@ class ApiClient {
           ),
         );
       } catch (e) {
-        debugPrint("delete account: " + e.toString());
+        debugPrint("delete account: $e");
         return false;
       }
       return true;
@@ -457,7 +454,7 @@ class ApiClient {
       );
       return true;
     } catch (e) {
-      debugPrint("delete account: " + e.toString());
+      debugPrint("delete account: $e");
       return false;
     }
   }
@@ -524,7 +521,7 @@ class ApiClient {
       excel.save(fileName: "${sn}_${start}_$end.xlsx");
       return true;
     } catch (e) {
-      debugPrint("Download error " + e.toString());
+      debugPrint("Download error $e");
       return false;
     }
   }
@@ -566,7 +563,7 @@ class ApiClient {
         users.add(user);
       }
     } catch (e) {
-      debugPrint("[Get all user] " + e.toString());
+      debugPrint("[Get all user] $e");
     }
   }
 
@@ -591,7 +588,7 @@ class ApiClient {
       smartphCnt = devices.where((c) => c.model == 'SmartpH-Log01').length;
       othersCnt = devices.length - greenlabCnt - smartphCnt;
     } catch (e) {
-      debugPrint("[Get all user] " + e.toString());
+      debugPrint("[Get all user] $e");
     }
   }
 
@@ -703,6 +700,31 @@ class ApiClient {
           'Type': type,
           'Description': desp,
           "IsActive": true,
+        },
+        options: Options(
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization":
+                "Basic ZHJhZ29ubW91bnRhaW4ucHJvamVjdEBnbWFpbC5jb206TG9uZ1Nvbn5e",
+          },
+        ),
+      );
+      if (resp.statusCode == 200) {
+        return true;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return false;
+  }
+
+  Future<bool> editCamUrl(int idDEvice, int idCam, String url) async {
+    try {
+      final resp = await dio.put(
+        '/Devices',
+        data: {
+          'Id': idDEvice,
+          'camUrl$idCam': url,
         },
         options: Options(
           headers: {

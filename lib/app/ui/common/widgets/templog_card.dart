@@ -49,7 +49,7 @@ class TempLogCard extends StatelessWidget {
                           color: Colors.amber,
                         ),
                         Text(
-                          "lostConnection".tr + ": " + model.getSyncDateObs,
+                          "${"lostConnection".tr}: ${model.getSyncDateObs}",
                           style: const TextStyle(color: Colors.red),
                         )
                       ],
@@ -160,9 +160,9 @@ class TempChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return LineChart(
       LineChartData(
-        clipData: FlClipData.none(),
-        gridData: FlGridData(show: false),
-        titlesData: FlTitlesData(show: false),
+        clipData: const FlClipData.none(),
+        gridData: const FlGridData(show: false),
+        titlesData: const FlTitlesData(show: false),
         borderData: FlBorderData(show: false),
         minX: 0,
         minY: valueList.reduce(min) - 5,
@@ -179,7 +179,7 @@ class TempChart extends StatelessWidget {
               end: Alignment.centerRight,
             ),
             isStrokeCapRound: true,
-            dotData: FlDotData(show: false),
+            dotData: const FlDotData(show: false),
             belowBarData: BarAreaData(
               show: true,
               gradient: LinearGradient(

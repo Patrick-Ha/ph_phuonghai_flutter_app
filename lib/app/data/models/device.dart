@@ -25,6 +25,9 @@ class Device {
   String model;
   String friendlyName;
   String description;
+  String camUrl1;
+  String camUrl2;
+  String camUrl3;
 
   final sensorsRef = [];
   final isActived = true.obs;
@@ -43,6 +46,9 @@ class Device {
     required this.key, // so S/N
     required this.type,
     required this.model,
+    required this.camUrl1,
+    required this.camUrl2,
+    required this.camUrl3,
     required this.friendlyName,
     required this.description,
   });
@@ -58,6 +64,9 @@ class DeviceModel extends Device {
     required String model,
     required String friendlyName,
     required String description,
+    required String camUrl1,
+    required String camUrl2,
+    required String camUrl3,
   }) : super(
           id: id,
           key: key,
@@ -65,6 +74,9 @@ class DeviceModel extends Device {
           model: model,
           friendlyName: friendlyName,
           description: description,
+          camUrl1: camUrl1,
+          camUrl2: camUrl2,
+          camUrl3: camUrl3,
         );
 
   factory DeviceModel.fromJson(Map<String, dynamic> json) {
@@ -73,6 +85,9 @@ class DeviceModel extends Device {
       key: json['SerialNumber'],
       type: json['Type'],
       model: json['Model'],
+      camUrl1: json["camUrl1"] ?? "",
+      camUrl2: json["camUrl2"] ?? "",
+      camUrl3: json["camUrl3"] ?? "",
       description: json["Description"],
       friendlyName: json["FriendlyName"],
     );

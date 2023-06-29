@@ -39,7 +39,7 @@ class IaqCard extends StatelessWidget {
                           color: Colors.amber,
                         ),
                         Text(
-                          "lostConnection".tr + ": " + model.getSyncDateObs,
+                          "${"lostConnection".tr}: ${model.getSyncDateObs}",
                           style: const TextStyle(color: Colors.red),
                         )
                       ],

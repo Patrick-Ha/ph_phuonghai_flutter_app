@@ -31,7 +31,7 @@ class AuthController extends GetxController {
     int error = 0; // 0: not error, 1: no internet, 2: wrong pass, 3: ??
     try {
       final response = await _dio.post(
-        baseUrl + '/Login',
+        '$baseUrl/Login',
         data: {'Email': email, 'Password': pwd},
       );
 
@@ -46,7 +46,7 @@ class AuthController extends GetxController {
         );
         await boxAuth.put("isLogged", user.toJson());
       }
-    } on DioError catch (err) {
+    } on DioException catch (err) {
       debugPrint(err.toString());
       error = 1;
     } catch (e) {
@@ -63,7 +63,7 @@ class AuthController extends GetxController {
       } else {
         try {
           final response = await _dio.post(
-            baseUrl + '/Register',
+            '$baseUrl/Register',
             data: {'Email': email, 'Password': pwd},
           );
           if (response.data.containsKey('message')) {
@@ -72,7 +72,7 @@ class AuthController extends GetxController {
             // Dang ky thanh cong
             Helper.showSuccess("signUpDone".tr);
           }
-        } on DioError {
+        } on DioException {
           Helper.showError("noInternet".tr);
         } catch (e) {
           debugPrint(e.toString());
@@ -89,7 +89,7 @@ class AuthController extends GetxController {
     if (GetUtils.isEmail(email)) {
       try {
         final response = await _dio.post(
-          baseUrl + '/ForgetPass',
+          '$baseUrl/ForgetPass',
           data: {'email': email},
         );
         if (response.statusCode == 400) {
@@ -97,8 +97,8 @@ class AuthController extends GetxController {
         } else {
           Helper.showSuccess("forgotPwdDone".tr);
         }
-      } on DioError catch (e) {
-        Helper.showError("noInternet".tr + " ${e.response!.statusCode}");
+      } on DioException catch (e) {
+        Helper.showError("${"noInternet".tr} ${e.response!.statusCode}");
       } catch (e) {
         debugPrint(e.toString());
         Helper.showError("somethingWentWrong".tr);

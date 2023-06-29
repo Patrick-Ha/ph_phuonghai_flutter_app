@@ -40,9 +40,9 @@ class SettingsPage extends GetWidget<HomeController> {
               ListTile(
                 trailing: const Icon(Icons.keyboard_arrow_right),
                 onTap: () async {
-                  int _index = 0;
-                  if (Get.locale!.languageCode == 'vi') _index = 1;
-                  String code = await dialogWithRadio(context, _index);
+                  int index = 0;
+                  if (Get.locale!.languageCode == 'vi') index = 1;
+                  String code = await dialogWithRadio(context, index);
                   if (code != "NA") {
                     Future.delayed(
                       const Duration(milliseconds: 150),
@@ -102,10 +102,10 @@ class SettingsPage extends GetWidget<HomeController> {
                   final ret = await confirmBottomModal(
                     context,
                     'deleteAccount'.tr,
-                    'areUSure'.tr + "\n" + "hintDeleteAccount".tr,
+                    "${'areUSure'.tr}\n${"hintDeleteAccount".tr}",
                   );
 
-                  if (ret) {
+                  if (ret && context.mounted) {
                     final pwd = await textFieldDialog(
                       context,
                       "hintPassword".tr,

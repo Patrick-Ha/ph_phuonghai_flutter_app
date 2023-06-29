@@ -157,6 +157,7 @@ class StatusEnvironList extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: ListTile(
+                  minLeadingWidth: 20,
                   leading: const SizedBox(
                       height: double.infinity,
                       child: Icon(Icons.monitor_heart)),
@@ -174,6 +175,7 @@ class StatusEnvironList extends StatelessWidget {
               const SizedBox(height: 35, child: VerticalDivider()),
               Expanded(
                 child: ListTile(
+                  minLeadingWidth: 12,
                   leading: const Icon(Icons.timelapse),
                   title: Obx(() => Text(
                       '${(Duration(seconds: model.countTimer.value))}'

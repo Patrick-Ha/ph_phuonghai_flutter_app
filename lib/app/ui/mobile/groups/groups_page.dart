@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:phuonghai/app/controllers/home_controller.dart';
@@ -62,12 +61,8 @@ class GroupSettingsWidget extends StatelessWidget {
         ExpansionTile(
           childrenPadding: const EdgeInsets.symmetric(horizontal: 15),
           leading: Badge(
-            elevation: 0,
-            badgeColor: Colors.green,
-            badgeContent: Text(
-              '${group.devices.length}',
-              style: const TextStyle(color: Colors.white),
-            ),
+            label: Text('${group.devices.length}'),
+            backgroundColor: Colors.green,
             child: const Icon(Icons.grid_view),
           ),
           title: Text(group.name.value.tr),

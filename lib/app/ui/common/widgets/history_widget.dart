@@ -81,7 +81,7 @@ class _HistoryWidgetState extends State<HistoryWidget> {
           }
         });
       }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       debugPrint(e.toString());
     }
 
@@ -325,7 +325,7 @@ class _DownloadModalState extends State<DownloadModal> {
                   DateFormat('yyyy-MM-dd').format(start!),
                 );
                 Helper.dismiss();
-                Navigator.of(context).pop();
+                if (context.mounted) Navigator.of(context).pop();
                 if (!r) Helper.showError('error'.tr);
               } else {
                 Helper.showLoading('loading'.tr);
@@ -336,7 +336,7 @@ class _DownloadModalState extends State<DownloadModal> {
                   DateFormat('yyyy-MM-dd').format(end!),
                 );
                 Helper.dismiss();
-                Navigator.of(context).pop();
+                if (context.mounted) Navigator.of(context).pop();
                 if (!r) Helper.showError('error'.tr);
               }
             },

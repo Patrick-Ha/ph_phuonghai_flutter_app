@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 
 Future<String> textFieldDialog(
     BuildContext context, String title, bool isNumber) async {
-  final _textFieldController = TextEditingController();
-  String _typedValue = "";
+  final textFieldController = TextEditingController();
+  String typedValue = "";
 
   await showDialog(
     barrierDismissible: false,
@@ -13,10 +13,10 @@ Future<String> textFieldDialog(
       return AlertDialog(
         title: Text(title),
         content: TextField(
-          controller: _textFieldController,
+          controller: textFieldController,
           autofocus: true,
           keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-          onChanged: (v) => _typedValue = v,
+          onChanged: (v) => typedValue = v,
         ),
         actions: <Widget>[
           TextButton(
@@ -25,14 +25,14 @@ Future<String> textFieldDialog(
               style: const TextStyle(color: Colors.black),
             ),
             onPressed: () {
-              _typedValue = "";
+              typedValue = "";
               Navigator.of(context).pop();
             },
           ),
           TextButton(
             child: Text("confirm".tr),
             onPressed: () {
-              _typedValue = _textFieldController.text;
+              typedValue = textFieldController.text;
               Navigator.of(context).pop();
             },
           ),
@@ -40,5 +40,5 @@ Future<String> textFieldDialog(
       );
     },
   );
-  return _typedValue;
+  return typedValue;
 }

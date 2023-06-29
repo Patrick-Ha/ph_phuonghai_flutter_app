@@ -50,7 +50,7 @@ const Map<String, String> en_US = {
   "signUp": "Sign Up",
   "pwdTooShort": "Password minimum 6 characters",
   "signUpError": "Account already exists",
-  "isValidEmail": "Invalid email format",
+  "isValidEmail": "Invalid format",
   "signUpDone": "Successful account registration",
   "repeatPassword": "Repeat password",
   "pwdIncorrect": "Password incorrect",
@@ -220,4 +220,7 @@ const Map<String, String> en_US = {
   "moiser": "Moiser",
   "temp_now": "Real temperature",
   "hum_now": "Real humidity",
+  "set": "Set",
+
+  "deleteCamera": "Delete Camera"
 };

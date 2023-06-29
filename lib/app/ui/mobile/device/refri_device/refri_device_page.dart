@@ -1,23 +1,14 @@
 import 'dart:ui';
 
-import 'package:avatar_glow/avatar_glow.dart';
-import 'package:date_time_picker/date_time_picker.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:phuonghai/app/data/models/refrigerator.dart';
-import 'package:phuonghai/app/helper/helper.dart';
 import 'package:phuonghai/app/ui/common/widgets/divider_with_text.dart';
 import 'package:phuonghai/app/ui/common/widgets/history_widget.dart';
 import 'package:phuonghai/app/ui/common/widgets/refri_item_widget.dart';
 import 'package:phuonghai/app/ui/mobile/device/device_info.dart';
 import 'package:sliding_up_panel2/sliding_up_panel2.dart';
-import 'package:latlong2/latlong.dart';
-
-import 'widgets/history_refri_item_mobile.dart';
 
 class RefiDevicePage extends StatefulWidget {
   const RefiDevicePage({Key? key, required this.model}) : super(key: key);
@@ -102,12 +93,12 @@ class _RefiDevicePageState extends State<RefiDevicePage> {
               bottom: _fabHeight.value,
               child: FloatingActionButton(
                 heroTag: 'gps_button',
+                onPressed: () {},
+                backgroundColor: Colors.white,
                 child: const Icon(
                   Icons.gps_fixed,
                   color: Colors.blueAccent,
                 ),
-                onPressed: () {},
-                backgroundColor: Colors.white,
               ),
             ),
           ),
@@ -117,12 +108,12 @@ class _RefiDevicePageState extends State<RefiDevicePage> {
               bottom: _fabHeight.value,
               child: FloatingActionButton(
                 heroTag: 'back_button',
+                onPressed: () => Navigator.pop(context),
+                backgroundColor: Colors.white,
                 child: const Icon(
                   Icons.arrow_back,
                   color: Colors.black,
                 ),
-                onPressed: () => Navigator.pop(context),
-                backgroundColor: Colors.white,
               ),
             ),
           ),
@@ -179,7 +170,7 @@ class _RefiDevicePageState extends State<RefiDevicePage> {
   Widget _body() {
     return FlutterMap(
       options: MapOptions(
-        center: LatLng(widget.model.sensor.lat, widget.model.sensor.long),
+        // center: LatLng(widget.model.sensor.lat, widget.model.sensor.long),
         zoom: 15.5,
         maxZoom: 22,
         interactiveFlags: InteractiveFlag.all & ~InteractiveFlag.rotate,
@@ -195,22 +186,22 @@ class _RefiDevicePageState extends State<RefiDevicePage> {
           userAgentPackageName: 'com.phuonghai',
           // retinaMode: true,
         ),
-        MarkerLayer(
+        const MarkerLayer(
           markers: [
-            Marker(
-              point: LatLng(widget.model.sensor.lat, widget.model.sensor.long),
-              width: 26,
-              height: 26,
-              builder: (context) => const AvatarGlow(
-                child: Icon(
-                  Icons.radio_button_checked,
-                  size: 20,
-                  color: Colors.blue,
-                ),
-                endRadius: 22,
-                glowColor: Colors.blueAccent,
-              ),
-            ),
+            // Marker(
+            //   point: LatLng(widget.model.sensor.lat, widget.model.sensor.long),
+            //   width: 26,
+            //   height: 26,
+            //   builder: (context) => const AvatarGlow(
+            //     child: Icon(
+            //       Icons.radio_button_checked,
+            //       size: 20,
+            //       color: Colors.blue,
+            //     ),
+            //     endRadius: 22,
+            //     glowColor: Colors.blueAccent,
+            //   ),
+            // ),
           ],
         ),
       ],

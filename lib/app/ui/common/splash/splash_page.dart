@@ -49,44 +49,47 @@ class _SplashPageState extends State<SplashPage> {
     );
 
     if (version.canUpdate == true) {
-      await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(
-              "newUpdateAvailable".tr,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            content: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(text: "${"newVersion".tr}: "),
-                  TextSpan(
-                    text: version.storeVersion,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
+      if (context.mounted) {
+        await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                "newUpdateAvailable".tr,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              content: Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(text: "${"newVersion".tr}: "),
+                    TextSpan(
+                      text: version.storeVersion,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            actions: [
-              TextButton(
-                child: Text("update".tr.toUpperCase()),
-                onPressed: () {
-                  LaunchReview.launch(
-                    writeReview: false,
-                    androidAppId: "app.phuonghai",
-                    iOSAppId: "1634339111",
-                  );
-                },
-              ),
-            ],
-          );
-        },
-      );
+              actions: [
+                TextButton(
+                  child: Text("update".tr.toUpperCase()),
+                  onPressed: () {
+                    LaunchReview.launch(
+                      writeReview: false,
+                      androidAppId: "app.phuonghai",
+                      iOSAppId: "1634339111",
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+
       return true;
     }
     return false;

@@ -7,4 +7,6 @@ final ThemeData appThemeData = ThemeData(
   appBarTheme: const AppBarTheme(elevation: 0, centerTitle: false),
   platform: TargetPlatform.iOS,
   brightness: Brightness.light,
+  // useMaterial3: true,
+  // colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
 );

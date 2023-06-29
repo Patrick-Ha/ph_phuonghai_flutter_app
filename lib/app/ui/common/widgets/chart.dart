@@ -20,8 +20,8 @@ class LineChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LineChart(LineChartData(
-      clipData: FlClipData.all(),
-      gridData: FlGridData(
+      clipData: const FlClipData.all(),
+      gridData: const FlGridData(
         show: true,
         drawVerticalLine: true,
       ),
@@ -33,7 +33,7 @@ class LineChartWidget extends StatelessWidget {
             getTitlesWidget: (c, v) => const SizedBox(),
           ),
         ),
-        topTitles: AxisTitles(
+        topTitles: const AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
         bottomTitles: AxisTitles(
@@ -71,7 +71,7 @@ class LineChartWidget extends StatelessWidget {
             end: Alignment.centerRight,
           ),
           isStrokeCapRound: true,
-          dotData: FlDotData(show: false),
+          dotData: const FlDotData(show: false),
           belowBarData: BarAreaData(
             show: true,
             gradient: LinearGradient(

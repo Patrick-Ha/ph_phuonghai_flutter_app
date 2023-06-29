@@ -61,7 +61,7 @@ class _CreateGroupModalState extends State<CreateGroupModal> {
                         );
 
                         Helper.dismiss();
-                        Navigator.of(context).pop();
+                        if (context.mounted) Navigator.of(context).pop();
                       }
                     },
                   ),

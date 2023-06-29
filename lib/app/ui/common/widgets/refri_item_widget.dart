@@ -48,11 +48,11 @@ class RefriItemWidget extends StatelessWidget {
                       animate:
                           sensor.temp.color.value == Colors.red ? true : false,
                       glowColor: Colors.red,
+                      endRadius: 24,
                       child: Icon(
                         sensor.temp.icon,
                         color: sensor.temp.color.value,
                       ),
-                      endRadius: 24,
                     ),
                   ),
                 ),

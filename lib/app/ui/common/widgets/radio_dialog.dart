@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 Future<String> dialogWithRadio(BuildContext context, int index) async {
-  final List<String> _items = ["English", "Tiếng Việt"];
+  final List<String> items = ["English", "Tiếng Việt"];
   int selectedRadio = index;
   String code = "NA";
 
@@ -16,9 +16,9 @@ Future<String> dialogWithRadio(BuildContext context, int index) async {
           builder: (BuildContext context, StateSetter setState) {
             return Column(
               mainAxisSize: MainAxisSize.min,
-              children: List<Widget>.generate(_items.length, (int index) {
+              children: List<Widget>.generate(items.length, (int index) {
                 return RadioListTile<int>(
-                  title: Text(_items[index]),
+                  title: Text(items[index]),
                   value: index,
                   groupValue: selectedRadio,
                   onChanged: (value) {

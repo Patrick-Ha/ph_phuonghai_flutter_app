@@ -189,7 +189,7 @@ class UserManagePage extends GetWidget<HomeController> {
                         final ret = await confirmDialog(
                           context,
                           'deleteAccount'.tr,
-                          'areUSure'.tr + "\n" + "hintDeleteAccount".tr,
+                          "${'areUSure'.tr}\n${"hintDeleteAccount".tr}",
                         );
                         if (ret) {
                           final r = await controller.apiClient

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:phuonghai/app/controllers/home_controller.dart';
 import 'package:phuonghai/app/data/models/refrigerator.dart';
 import 'package:phuonghai/app/ui/common/widgets/divider_with_text.dart';
 import 'package:phuonghai/app/ui/common/widgets/history_widget.dart';
 import 'package:phuonghai/app/ui/common/widgets/refri_item_widget.dart';
-import 'package:latlong2/latlong.dart';
 
 class DetailRefriPage extends StatefulWidget {
   const DetailRefriPage({Key? key, required this.model}) : super(key: key);
@@ -168,17 +166,17 @@ class _HistoryRefriItemState extends State<HistoryRefriItem> {
         (item) => item.key == Key(widget.item.timeUpdated),
       );
       if (index == -1) {
-        c.detailDevice[0].markers.add(
-          Marker(
-            key: Key(widget.item.timeUpdated),
-            point: LatLng(widget.item.lat, widget.item.long),
-            builder: (_) => const Icon(
-              Icons.location_on,
-              size: 30,
-              color: Colors.deepPurple,
-            ),
-          ),
-        );
+        // c.detailDevice[0].markers.add(
+        //   Marker(
+        //     key: Key(widget.item.timeUpdated),
+        //     point: LatLng(widget.item.lat, widget.item.long),
+        //     builder: (_) => const Icon(
+        //       Icons.location_on,
+        //       size: 30,
+        //       color: Colors.deepPurple,
+        //     ),
+        //   ),
+        // );
       }
     }
   }

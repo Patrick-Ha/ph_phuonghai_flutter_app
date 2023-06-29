@@ -4,6 +4,7 @@ import 'package:phuonghai/app/data/models/group.dart';
 import 'package:phuonghai/app/ui/common/widgets/device_card.dart';
 import 'package:phuonghai/app/ui/common/widgets/iaq_card.dart';
 import 'package:phuonghai/app/ui/common/widgets/templog_card.dart';
+import 'package:phuonghai/app/ui/common/widgets/environ_card.dart';
 import 'package:phuonghai/app/ui/mobile/device/refri_device/refrigerator_card_mobile.dart';
 import 'package:phuonghai/app/ui/theme/app_colors.dart';
 
@@ -79,6 +80,9 @@ class _DashboardPageState extends State<DashboardPage> {
                           "Refrigerator") {
                         return RefrigeratorCardMobile(
                             model: widget.group.devices[index]);
+                      } else if (widget.group.devices[index].type ==
+                          'Environmental Chamber') {
+                        return EnvironCard(model: widget.group.devices[index]);
                       } else {
                         return DeviceCard(model: widget.group.devices[index]);
                       }
